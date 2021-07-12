@@ -1,5 +1,7 @@
 # jmu-c2-android
 
+负责：sjh
+
 #### 介绍
 安卓实训
 
