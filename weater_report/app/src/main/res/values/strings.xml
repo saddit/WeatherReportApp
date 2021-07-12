@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">懂天气</string>
+
+    <string name="img_content_description" translatable="false">图片加载中</string>
+    <string name="hms">HMS</string>
+    <string name="bg_red">红底</string>
+    <string name="bg_blue">蓝底</string>
+    <string name="bg_white">白底</string>
+    <!--SearchActivity-->
+    <string name="search_hint">请输入城市名</string>
+
+    <string name="aqi">AQI</string>
+    <string name="week">星期</string>
+    <string name="date">日期</string>
+    <string name="temperature">天气</string>
+    <string name="AQI">AQI</string>
+    <string name="quality">质量</string>
+    <string name="lowest">最低</string>
+    <string name="highest">最高</string>
+    <string name="rank">排名</string>
+    <string name="city">城市</string>
+    <string name="car_restricted">机动车尾号限行</string>
+    <string name="port_search">港口查询</string>
+
+    <string name="activity_yesterday">昨日天气</string>
+
+    <string name="activity_future_weather">未来十五天天气预报</string>
+
+    <string name="activity_alarm">气象预警</string>
+    <string name="no_alarm">天气正常，暂无预警</string>
+
+    <string name="activity_air_quality">空气质量</string>
+
+    <string name="activity_air_quality_rank">空气质量排行榜</string>
+
+    <string name="activity_zodiac">农历、节气与生肖</string>
+
+    <string name="activity_car_restricted_city">机动车尾号限行</string>
+
+    <string name="activity_car_restricted_info">机动车尾号限行信息</string>
+
+    <string name="port_name">港口名：</string>
+    <string name="province_name">所在省份：</string>
+    <string name="location_name">经纬度：</string>
+    <string name="water_level_name">水位基准：</string>
+    <string name="port_info">港口信息</string>
+</resources>

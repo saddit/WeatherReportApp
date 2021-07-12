@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/black_38p_0"
+    android:paddingStart="@dimen/padding_normal"
+    android:paddingEnd="@dimen/padding_normal"
+    android:paddingTop="@dimen/padding_normal_half"
+    android:paddingBottom="@dimen/padding_normal_half">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_week"
+        android:shadowColor="@color/gray_4"
+        android:shadowDx="0"
+        android:shadowDy="2"
+        android:shadowRadius="2"
+        android:layout_width="0dp"
+        android:layout_weight="1.5"
+        android:text="@string/week"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:layout_gravity="center_vertical"
+        android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_date"
+        android:layout_width="0dp"
+        android:shadowColor="@color/gray_4"
+        android:shadowDx="0"
+        android:shadowDy="2"
+        android:shadowRadius="2"
+        android:textSize="20sp"
+        android:text="@string/date"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1.5"
+        android:textColor="@color/black"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:shadowColor="@color/gray_4"
+        android:shadowDx="0"
+        android:shadowDy="2"
+        android:shadowRadius="2"
+        android:layout_width="0dp"
+        android:text="@string/AQI"
+        android:textSize="20sp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:gravity="end"
+        android:textColor="@color/black"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:shadowColor="@color/gray_4"
+        android:shadowDx="0"
+        android:shadowDy="2"
+        android:shadowRadius="2"
+        android:layout_width="0dp"
+        android:text="@string/quality"
+        android:textSize="20sp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:gravity="end"
+        android:textColor="@color/black"/>
+
+</LinearLayout>

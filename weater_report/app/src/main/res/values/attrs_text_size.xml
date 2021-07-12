@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="ExLargeText" format="dimension" />
+    <attr name="LargeText" format="dimension" />
+    <attr name="ExBigText" format="dimension" />
+    <attr name="BigText" format="dimension" />
+    <attr name="MediumText" format="dimension" />
+    <attr name="SmallText" format="dimension" />
+    <attr name="MicroText" format="dimension" />
+    <attr name="ExMicroText" format="dimension" />
+</resources>

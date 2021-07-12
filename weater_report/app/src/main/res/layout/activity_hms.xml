@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_gray"
+    tools:context=".ui.activity.HmsActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:navigationIcon="@drawable/ic_return_black">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/hms"
+            android:textColor="@color/black"
+            android:textSize="?attr/MediumText"
+            android:textStyle="bold"/>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/photoImgIV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/margin_normal"
+            android:src="@drawable/ic_add_a_picture"
+            android:scaleType="fitCenter" />
+
+    </FrameLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/blueLL"
+            android:layout_centerVertical="true"
+            android:orientation="vertical">
+
+            <com.thread0.weather.ui.widget.CircleDot
+                android:id="@+id/redCircleDot"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="@dimen/margin_normal"
+                app:able_select="true"
+                app:stroke_ratio="0.08"
+                app:stroke_color="@color/choice_ring"
+                app:inner_color="@color/red" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/bg_red"
+                android:textSize="?attr/SmallText"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/blueLL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+
+            <com.thread0.weather.ui.widget.CircleDot
+                android:id="@+id/blueCircleDot"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="@dimen/margin_normal"
+                app:able_select="true"
+                app:stroke_ratio="0.08"
+                app:stroke_color="@color/choice_ring"
+                app:inner_color="@color/blue" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/bg_blue"
+                android:textSize="?attr/SmallText"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/blueLL"
+            android:layout_centerVertical="true"
+            android:orientation="vertical">
+
+            <com.thread0.weather.ui.widget.CircleDot
+                android:id="@+id/whiteCircleDot"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="@dimen/margin_normal"
+                app:able_select="true"
+                app:stroke_ratio="0.08"
+                app:stroke_color="@color/choice_ring"
+                app:inner_color="@color/white"
+                app:ring_color="@color/gray1"
+                app:ring="true"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/bg_white"
+                android:textSize="?attr/SmallText"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

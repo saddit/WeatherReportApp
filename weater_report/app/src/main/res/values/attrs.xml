@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CircleDot">
+        <attr name="inner_color" format="color" />
+        <attr name="stroke_color" format="color" />
+        <attr name="ring_color" format="color" />
+        <attr name="able_select" format="boolean" />
+        <attr name="selected" format="boolean" />
+        <attr name="ring" format="boolean" />
+        <attr name="radius" format="float" />
+        <attr name="stroke_ratio" format="float" />
+    </declare-styleable>
+</resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--角度-->
+    <dimen name="angle_normal_half">4dp</dimen>
+    <dimen name="angle_normal">8dp</dimen>
+    <dimen name="angle_medium">10dp</dimen>
+    <dimen name="angle_big">12dp</dimen>
+    <dimen name="angle_ex_big">16dp</dimen>
+    <dimen name="angle_large">20dp</dimen>
+    <dimen name="angle_ex_large">24dp</dimen>
+
+    <!--边距-->
+    <dimen name="margin_ex_mini">4dp</dimen>
+    <dimen name="margin_small">10dp</dimen>
+    <dimen name="margin_normal_half">7dp</dimen>
+    <dimen name="margin_normal">14dp</dimen>
+    <dimen name="margin_large">20dp</dimen>
+    <dimen name="margin_ex_large">30dp</dimen>
+    <dimen name="padding_ex_mini">4dp</dimen>
+    <dimen name="padding_small">10dp</dimen>
+    <dimen name="padding_normal">14dp</dimen>
+    <dimen name="padding_normal_half">7dp</dimen>
+    <dimen name="padding_large">20dp</dimen>
+    <dimen name="padding_ex_large">30dp</dimen>
+
+    <!--尺寸-->
+    <dimen name="size_icon_normal">24dp</dimen>
+    <dimen name="size_icon_big">30dp</dimen>
+    <dimen name="size_icon_large">48dp</dimen>
+    <dimen name="size_icon_small">20dp</dimen>
+    <dimen name="size_icon_mini">16dp</dimen>
+    <dimen name="size_icon_ex_mini">12dp</dimen>
+    <dimen name="dialog_btn_height">48dp</dimen>
+</resources>

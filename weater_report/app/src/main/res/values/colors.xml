@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#F6F7FB</color>
+    <color name="colorPrimaryDark">#F6F7FB</color>
+    <color name="colorAccent">#00BF72</color>
+
+    <color name="blue_00DEFF">#00DEFF</color>
+    <color name="gray_4">#444444</color>
+    <color name="black_38p_0">#61000000</color>
+    <color name="red_FA5F">#FA5F5F</color>
+    <color name="yellow_FF980">#FF9800</color>
+
+    <color name="bg_gray">#F2F2F2</color>
+    <color name="choice_ring">#FF3B30</color>
+</resources>
