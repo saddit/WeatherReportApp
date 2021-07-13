@@ -22,4 +22,6 @@ interface WeatherService {
         @Query("language") language: String = "zh-Hans",
         @Query("unit") unit: String = "c"
     ): WeatherFromServer?
+
+
 }

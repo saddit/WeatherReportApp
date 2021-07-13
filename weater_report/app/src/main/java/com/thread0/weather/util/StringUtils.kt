@@ -4,6 +4,7 @@
 package com.thread0.weather.util
 
 import android.util.Base64
+import com.thread0.weather.net.WEATHER_PRIVATE_KEY
 import java.net.URLEncoder
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
@@ -20,7 +21,7 @@ object StringUtils {
      * @param ttl 失效时间
      * @return 验证签名的字符串
      */
-    fun getEncryptSign(timestamp: String, key: String = "PV6Uj2FnKRzwKMxR0", ttl: String = "1800"): String{
+    fun getEncryptSign(timestamp: String, key: String = WEATHER_PRIVATE_KEY, ttl: String = "1800"): String{
         val splicing = "ts=$timestamp&ttl=$ttl&uid=$key"
         val type = "HmacSHA1"
         val secret = SecretKeySpec("S5cg0Hkjkt8tDfMGs".toByteArray(), type)

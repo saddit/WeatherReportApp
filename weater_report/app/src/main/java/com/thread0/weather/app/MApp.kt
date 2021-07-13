@@ -37,6 +37,8 @@ class MApp: Application() {
         ScaffoldConfig.getInstance(this)
             .setBaseUrl(WEATHER_URL)
             .setLevel(Level.NONE)
+        val dir = filesDir.absolutePath + "/mmkv_2"
+        MMKV.initialize(dir)
     }
 
     override fun onTerminate() {

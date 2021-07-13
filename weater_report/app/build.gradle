@@ -55,6 +55,7 @@ android {
     // 开启 viewBinding
     buildFeatures{
         viewBinding true
+        dataBinding true
     }
     //如果有用到 kapt 添加如下配置
     kapt {

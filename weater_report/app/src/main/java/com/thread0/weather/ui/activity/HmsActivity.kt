@@ -37,6 +37,7 @@ class HmsActivity : SimpleActivity() {
         binding.redCircleDot.setOnClickListener(object : CircleDot.OnClickListener {
             override fun onClick() {
                 //TODO：开始运用HMSCore的抠图能力，抠出人像，并设置背景色为红色后显示到photoImgIV，处理过程需要有处理中的提示
+
             }
         })
         binding.blueCircleDot.setOnClickListener(object : CircleDot.OnClickListener {
