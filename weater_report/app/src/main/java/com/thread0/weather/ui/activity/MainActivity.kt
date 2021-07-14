@@ -4,8 +4,22 @@
 package com.thread0.weather.ui.activity
 
 import android.os.Bundle
+import androidx.databinding.ObservableByte
+import androidx.databinding.ObservableChar
+import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.widget.ViewPager2
+import com.tencent.mmkv.MMKV
+import com.thread0.weather.data.model.Location
+import com.thread0.weather.data.model.Weather
 import com.thread0.weather.databinding.ActivityMainBinding
+import com.thread0.weather.net.service.WeatherService
+import com.thread0.weather.ui.adapter.MainFragmentPagerAdapter
+import com.thread0.weather.ui.fragment.WeatherFragment
+import kotlinx.coroutines.*
+import top.xuqingquan.app.ScaffoldConfig
 import top.xuqingquan.base.view.activity.SimpleActivity
+import top.xuqingquan.extension.launch
+import kotlin.collections.MutableSet as MutableSet1
 
 /**
  *@ClassName: MainActivity
@@ -36,11 +50,54 @@ import top.xuqingquan.base.view.activity.SimpleActivity
 class MainActivity : SimpleActivity() {
     // view binding
     private lateinit var binding: ActivityMainBinding
+    private lateinit var locations: Set<String>
+    private val weatherService: WeatherService = ScaffoldConfig.getRepositoryManager().obtainRetrofitService(
+        WeatherService::class.java
+    )
+    companion object {
+        val LOCATION_SAVE_KEY = "savedLocation"
+    }
 
+    @DelicateCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        loadLocations()
+        launch(Dispatchers.IO,{
+            initPager()
+        },{
+          it.printStackTrace()
+        },{})
+    }
 
+    private fun loadLocations() {
+//        val locationNameSet = MMKV.defaultMMKV()!!.decodeStringSet(LOCATION_SAVE_KEY);
+//        if (locationNameSet != null) {
+//            locations = locationNameSet
+//        };
+        locations = setOf("beijing")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        MMKV.defaultMMKV()!!.encode(LOCATION_SAVE_KEY, locations)
+    }
+
+    private suspend fun initPager() {
+        val fragments = mutableListOf<WeatherFragment>()
+        for (location in locations) {
+            val result = weatherService.getLocationCurrentWeather(location)!!.results[0]
+            fragments.add(WeatherFragment.newInstance(result));
+        }
+        withContext(Dispatchers.Main){
+            binding.weatherViewPager.adapter = MainFragmentPagerAdapter(supportFragmentManager, lifecycle, fragments.toList())
+            binding.weatherViewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    val location = locations.toList()[position]
+                    binding.mainTitle.text = location
+                }
+            })
+        }
     }
 }

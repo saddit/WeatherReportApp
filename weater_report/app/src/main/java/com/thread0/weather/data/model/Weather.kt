@@ -3,7 +3,10 @@
  */
 package com.thread0.weather.data.model
 
+import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
+import java.time.LocalDateTime
 
 /**
  *@ClassName: Location
@@ -19,7 +22,7 @@ data class Location(
     val timezone: String,
     @SerializedName("timezone_offset")
     val timezoneOffset: String
-)
+): Serializable
 
 /**
  *@ClassName: Weather
@@ -28,26 +31,41 @@ data class Location(
  *@Date: 2021/5/30 5:00 下午 Created
  */
 data class Weather(
-    @SerializedName("text")
-    val weather: String,
-    val code: Int,
-    val temperature: Int,
+    @SerializedName("text", alternate = ["text_day"])
+    val weather: String?,
+    @SerializedName("time", alternate = ["date"])
+    val time: String?,
+    @SerializedName("code", alternate = ["code_day"])
+    val code: Int?,
+    val temperature: Int?,
     @SerializedName("feels_like")
-    val feelsLike: Int,
-    val pressure: Int,
-    val humidity: Int,
-    val visibility: Double,
+    val feelsLike: Int?,
+    val pressure: Int?,
+    val humidity: Int?,
+    val visibility: Double?,
     @SerializedName("wind_direction")
-    val windDirection: String,
+    val windDirection: String?,
     @SerializedName("wind_direction_degree")
-    val windDirection_degree: Int,
+    val windDirection_degree: Int?,
     @SerializedName("wind_speed")
-    val windSpeed: String,
+    val windSpeed: String?,
     @SerializedName("wind_scale")
-    val windScale: String,
-    val clouds: String,
+    val windScale: String?,
+    val clouds: String?,
     @SerializedName("dew_point")
-    val dewPoint: String
+    val dewPoint: String?,
+    var high: Int?,
+    var low: Int?,
+):Serializable
+
+data class MultiWeatherResult(
+    val location: Location,
+    @SerializedName("daily", alternate = ["hourly"])
+    val multi: List<Weather>,
+)
+
+data class MultiWeatherFromServer(
+    val results: List<MultiWeatherResult>
 )
 
 /**

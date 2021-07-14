@@ -3,8 +3,11 @@
  */
 package com.thread0.weather.util
 
+import android.os.Build
+import androidx.annotation.RequiresApi
+import java.text.DateFormat
 import java.text.SimpleDateFormat
-import java.util.Locale
+import java.util.*
 
 /**
 *@ClassName: TimeUtils
@@ -37,6 +40,13 @@ object TimeUtils {
         return SimpleDateFormat(pattern, Locale.getDefault()).format(timeVar)
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun time2String(time:String, pattern: String): String {
+        val df: DateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX")
+        val dateFormat = df.parse(time);
+        return SimpleDateFormat(pattern,  Locale.getDefault()).format(dateFormat)
+    }
+
     fun getCurrentHour(): String{
         return SimpleDateFormat("HH",Locale.getDefault()).format(System.currentTimeMillis())
     }
@@ -67,5 +77,9 @@ object TimeUtils {
         val date = format.substringBefore("T")
         val time = format.substringAfter("T")
         return "$date $time"
+    }
+
+    fun getMMdd(time: String): String {
+        return time.substringAfter("-")
     }
 }
