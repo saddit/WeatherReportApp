@@ -77,7 +77,6 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-
     // 子模块核心
     implementation 'top.xuqingquan:scaffold:3.0.2'
     implementation 'top.xuqingquan:utils:3.0.2'
@@ -98,6 +97,7 @@ dependencies {
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.5.9'
     // 等待动画
     implementation 'com.zyao89:zloading:1.2.0'
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
     // huawei ml
     // 引入基础SDK
     implementation 'com.huawei.hms:ml-computer-vision-segmentation:2.0.4.300'

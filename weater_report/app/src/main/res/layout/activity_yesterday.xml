@@ -1,30 +1,187 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@mipmap/bg_clear_day">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.activity.YesterdayActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/blue_00DEFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/ic_return">
+    <data>
+        <import type="com.thread0.weather.util.TimeUtils"/>
+        <variable
+            name="location"
+            type="com.thread0.weather.data.model.Location" />
+        <variable
+            name="weather"
+            type="com.thread0.weather.data.model.Weather" />
+    </data>
 
-        <TextView
-            android:id="@+id/tv_title"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@mipmap/bg_clear_day">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/blue_00DEFF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/ic_return">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/activity_yesterday"
+                android:textColor="@color/white"
+                android:textSize="?attr/MediumText" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/temperature_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/activity_yesterday"
-            android:textColor="@color/white"
-            android:textSize="?attr/MediumText" />
+            android:layout_marginTop="92dp"
+            android:textColor="@color/bg_gray"
+            android:textSize="100sp"
+            android:textStyle="bold"
+            android:text="@{weather.high + `°`}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            tools:text="30°" />
 
-    </androidx.appcompat.widget.Toolbar>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/date_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="524dp"
+            android:text="@string/date_string"
+            android:textColor="@color/bg_gray"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/date_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:text="@{weather.time}"
+            app:layout_constraintBottom_toBottomOf="@+id/date_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            android:textColor="@color/bg_gray"
+            app:layout_constraintStart_toEndOf="@+id/date_label"
+            app:layout_constraintTop_toTopOf="@+id/date_label"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="2019-10-11" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/location_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@string/location_string"
+            android:textColor="@color/bg_gray"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/date_label"
+            app:layout_constraintVertical_bias="0.373" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/bg_gray"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:text="@{location.path.replace(`,`,`/`)}"
+            app:layout_constraintBottom_toBottomOf="@+id/location_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/location_label"
+            app:layout_constraintTop_toTopOf="@+id/location_label"
+            app:layout_constraintVertical_bias="1.0"
+            tools:text="福建/厦门/集美" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/low_high_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@{weather.high + `°/` + weather.low + `°`}"
+            android:textColor="@color/bg_gray"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/temperature_label"
+            tools:text="20°/18°" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/day_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="120dp"
+            android:layout_marginTop="11dp"
+            android:text="@string/day_text"
+            android:textColor="@color/bg_gray"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/low_high_text"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/night_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="11dp"
+            android:text="@string/night_text"
+            android:textColor="@color/bg_gray"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/day_weather"
+            app:layout_constraintTop_toBottomOf="@+id/low_high_text"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/day_weather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{weather.weather}"
+            android:textColor="@color/bg_gray"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/day_text"
+            app:layout_constraintStart_toEndOf="@+id/day_text"
+            app:layout_constraintTop_toTopOf="@+id/day_text"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="多云" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/night_weather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{weather.textNight}"
+            android:textColor="@color/bg_gray"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/night_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/night_text"
+            app:layout_constraintTop_toTopOf="@+id/night_text"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="多云" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

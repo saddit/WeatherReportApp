@@ -33,6 +33,7 @@ class SearchActivity : SimpleActivity() {
     private fun initDataAndUI() {
         //TODO:1、获取数据库内保存的城市数据，通过RecycleView展示出来，供用户选择；
         //      2、用户点击RecycleView后通过setResult()将所点击的城市数据传递出去，并关闭此界面。
+
     }
 
     private fun setClickEvent() {
@@ -42,8 +43,9 @@ class SearchActivity : SimpleActivity() {
         }
         // 文字变化时刷新列表
         binding.etSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
+            }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 refreshCityList(s?.toString() ?: "")
             }

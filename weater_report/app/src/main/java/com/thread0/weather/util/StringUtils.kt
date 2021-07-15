@@ -32,5 +32,4 @@ object StringUtils {
         val encryptSign = URLEncoder.encode(base64)
         return "ts=$timestamp&ttl=$ttl&uid=$key&sig=$encryptSign"
     }
-
 }

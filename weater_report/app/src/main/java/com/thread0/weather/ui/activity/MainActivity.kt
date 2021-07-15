@@ -3,14 +3,12 @@
  */
 package com.thread0.weather.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.databinding.ObservableByte
-import androidx.databinding.ObservableChar
-import androidx.fragment.app.FragmentActivity
+import androidx.activity.result.ActivityResultLauncher
 import androidx.viewpager2.widget.ViewPager2
 import com.tencent.mmkv.MMKV
 import com.thread0.weather.data.model.Location
-import com.thread0.weather.data.model.Weather
 import com.thread0.weather.databinding.ActivityMainBinding
 import com.thread0.weather.net.service.WeatherService
 import com.thread0.weather.ui.adapter.MainFragmentPagerAdapter
@@ -19,7 +17,8 @@ import kotlinx.coroutines.*
 import top.xuqingquan.app.ScaffoldConfig
 import top.xuqingquan.base.view.activity.SimpleActivity
 import top.xuqingquan.extension.launch
-import kotlin.collections.MutableSet as MutableSet1
+import top.xuqingquan.utils.startActivity
+import top.xuqingquan.utils.startActivityForResult
 
 /**
  *@ClassName: MainActivity
@@ -48,14 +47,21 @@ import kotlin.collections.MutableSet as MutableSet1
  *@Date: 2021/5/25 11:36 下午 Created
  */
 class MainActivity : SimpleActivity() {
-    // view binding
+
     private lateinit var binding: ActivityMainBinding
+
     private lateinit var locations: Set<String>
+
+    private  val locationObjects: MutableList<Location> = mutableListOf()
+
     private val weatherService: WeatherService = ScaffoldConfig.getRepositoryManager().obtainRetrofitService(
         WeatherService::class.java
     )
+
     companion object {
         val LOCATION_SAVE_KEY = "savedLocation"
+        val SEARCH_REQ_CODE = 0x4a22fff
+        val SEARCH_RES_KEY = "search_result_key"
     }
 
     @DelicateCoroutinesApi
@@ -64,6 +70,7 @@ class MainActivity : SimpleActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         loadLocations()
+        initEvent()
         launch(Dispatchers.IO,{
             initPager()
         },{
@@ -84,18 +91,51 @@ class MainActivity : SimpleActivity() {
         MMKV.defaultMMKV()!!.encode(LOCATION_SAVE_KEY, locations)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode != RESULT_OK || data == null) {
+            return;
+        }
+        if(requestCode == SEARCH_REQ_CODE) {
+            val loca = data.getStringExtra(SEARCH_RES_KEY)
+            launch(Dispatchers.IO,{
+                addPage(loca)
+            },{
+                it.printStackTrace()
+            })
+        }
+    }
+
+    private fun initEvent() {
+        binding.goHmsBtn.setOnClickListener {
+            startActivity<HmsActivity>()
+        }
+        binding.addCityBtn.setOnClickListener{
+            startActivityForResult<SearchActivity>(SEARCH_REQ_CODE)
+        }
+    }
+
+    private suspend fun addPage(location: String?) {
+        if(location == null) return
+        val result = weatherService.getLocationCurrentWeather(location)!!.results[0]
+        locationObjects.add(result.location)
+        withContext(Dispatchers.Main) {
+            (binding.weatherViewPager.adapter as MainFragmentPagerAdapter).addFragment(WeatherFragment.newInstance(result))
+        }
+    }
+
     private suspend fun initPager() {
         val fragments = mutableListOf<WeatherFragment>()
         for (location in locations) {
             val result = weatherService.getLocationCurrentWeather(location)!!.results[0]
             fragments.add(WeatherFragment.newInstance(result));
+            locationObjects.add(result.location)
         }
         withContext(Dispatchers.Main){
             binding.weatherViewPager.adapter = MainFragmentPagerAdapter(supportFragmentManager, lifecycle, fragments.toList())
             binding.weatherViewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
-                    val location = locations.toList()[position]
-                    binding.mainTitle.text = location
+                    binding.mainTitle.text = locationObjects[position].path.replace(',','/')
                 }
             })
         }

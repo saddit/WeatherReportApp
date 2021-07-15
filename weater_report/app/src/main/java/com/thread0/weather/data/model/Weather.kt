@@ -33,10 +33,13 @@ data class Location(
 data class Weather(
     @SerializedName("text", alternate = ["text_day"])
     val weather: String?,
+    @SerializedName("text_night")
+    val textNight: String?,
     @SerializedName("time", alternate = ["date"])
     val time: String?,
     @SerializedName("code", alternate = ["code_day"])
     val code: Int?,
+    val code_night: Int?,
     val temperature: Int?,
     @SerializedName("feels_like")
     val feelsLike: Int?,

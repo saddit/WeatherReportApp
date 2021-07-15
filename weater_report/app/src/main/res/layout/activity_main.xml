@@ -12,11 +12,12 @@
         android:background="@color/teal">
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/go_hms_btn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_gravity="left"
+            android:layout_gravity="start"
             android:background="#00FFFFFF"
-            android:text="HMS"
+            android:text="@string/hms_btn_text"
             android:textColor="@color/bg_gray" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -24,14 +25,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="location"
             android:textColor="@color/white"
             android:textSize="?attr/MediumText" />
 
         <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/add_city_btn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             android:background="#00FFFFFF"
             android:padding="12dp"
             android:src="@drawable/ic_add" />

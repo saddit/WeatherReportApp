@@ -15,9 +15,12 @@ import com.thread0.weather.data.model.Location
 import com.thread0.weather.ui.adapter.HourlyWeatherAdapter
 import com.thread0.weather.data.model.WeatherResult
 import com.thread0.weather.databinding.FragmentWeatherBinding
+import com.thread0.weather.ui.activity.*
+import com.thread0.weather.ui.adapter.DailyWeatherAdapter
 import kotlinx.coroutines.*
 import top.xuqingquan.app.ScaffoldConfig
 import top.xuqingquan.extension.launch
+import top.xuqingquan.utils.startActivity
 import kotlin.coroutines.coroutineContext
 
 /**
@@ -53,13 +56,13 @@ class WeatherFragment : Fragment() {
         binding = FragmentWeatherBinding.inflate(inflater, container, false)
         binding!!.weather = weather
         binding!!.weatherLayout.setBackgroundResource(getSky(weather?.code.toString()).bg);
-        binding!!.hourlyRv.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
         launch(Dispatchers.IO,{
             initHourly()
             initDaily()
         },{
             it.printStackTrace()
         })
+        initBtn()
         return binding!!.root
     }
 
@@ -78,8 +81,34 @@ class WeatherFragment : Fragment() {
         val h = dailyWeathers?.get(0)?.high
         withContext(Dispatchers.Main) {
             binding!!.temperatureHighLow.text = "$h°/$l°"
+            binding!!.rvDaily.adapter = DailyWeatherAdapter(dailyWeathers)
         }
     }
+
+    private fun initBtn() {
+        binding!!.zodicBtn.setOnClickListener {
+            startActivity<ZodiacActivity>()
+        }
+        binding!!.carResrictBtn.setOnClickListener {
+            startActivity<CarRestrictedCityActivity>()
+        }
+        binding!!.alarmBtn.setOnClickListener {
+            startActivity<AlarmActivity>(
+                "location" to location?.name
+            )
+        }
+        binding!!.airBtn.setOnClickListener {
+            startActivity<AirQualityActivity>(
+                "location" to location?.name
+            )
+        }
+        binding!!.yestodayWeatherBtn.setOnClickListener {
+            startActivity<YesterdayActivity>(
+                "location" to location?.name
+            )
+        }
+    }
+
 
     companion object {
         var ARG_W = "arg_weather"

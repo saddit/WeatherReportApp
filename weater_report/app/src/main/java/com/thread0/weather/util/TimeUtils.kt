@@ -41,9 +41,10 @@ object TimeUtils {
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
-    fun time2String(time:String, pattern: String): String {
+    fun time2String(time:String?, pattern: String): String {
+        if(time == null) return "";
         val df: DateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX")
-        val dateFormat = df.parse(time);
+        val dateFormat = df.parse(time)
         return SimpleDateFormat(pattern,  Locale.getDefault()).format(dateFormat)
     }
 
@@ -81,5 +82,9 @@ object TimeUtils {
 
     fun getMMdd(time: String): String {
         return time.substringAfter("-")
+    }
+
+    fun getYYYYMMDD(time: String): String {
+        return time.substringBefore(" ");
     }
 }

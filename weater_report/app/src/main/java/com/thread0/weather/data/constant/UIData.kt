@@ -1,6 +1,27 @@
 package com.thread0.weather.data.constant
 
+import android.graphics.Color
 import com.thread0.weather.R
+
+private val aqi = mapOf(
+    "优" to Color.parseColor("#0BA62C"),
+    "良" to Color.parseColor("#FFCC00"),
+    "轻度污染" to Color.parseColor("#FF3B30"),
+)
+
+fun getAqiColor(quality: String?): Int {
+    if (quality == null) return aqi["轻度污染"]!!
+    return aqi[quality] ?: aqi["轻度污染"]!!
+}
+
+fun getAqiLevel(aqi: String): String {
+    val aqiIntVal = Integer.parseInt(aqi);
+    return when {
+        aqiIntVal > 100 -> "差"
+        aqiIntVal > 50 -> "良"
+        else -> "优"
+    }
+}
 
 /**
  *@ClassName: Sky

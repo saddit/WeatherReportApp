@@ -4,35 +4,37 @@ import com.google.gson.annotations.SerializedName
 import java.time.LocalDateTime
 
 data class Station(
-    val aqi: Int,
-    val pm25: Int,
-    val pm10: Int,
-    val so2: Int,
-    val no2: Int,
-    val co: Double,
-    val o3: Int,
+    val aqi: String?,
+    val pm25: String?,
+    val pm10: String?,
+    val so2: String?,
+    val no2: String?,
+    val co: String?,
+    val o3: String?,
     @SerializedName("primary_pollutant")
     val primaryPollutant: String,
     val station: String,
-    val latitude: Double,
-    val longitude: Double,
+    val latitude: String?,
+    val longitude: String?,
     @SerializedName("last_update")
-    val lastUpdate: LocalDateTime
+    val lastUpdate: String?,
 )
 
 data class AirQuality(
-    val aqi: Int,
-    val pm25: Int,
-    val so2: Int,
-    val no2: Int,
-    val co: Double,
-    val o3: Int,
+    val aqi: String?,
+    val pm25: String?,
+    val pm10: String?,
+    val so2: String?,
+    val no2: String?,
+    val co: String?,
+    val o3: String?,
     @SerializedName("primary_pollutant")
-    val primaryPollutant: String,
-    val quality: String,
+    val primaryPollutant: String?,
+    val quality: String?,
     @SerializedName("last_update")
-    val lastUpdate: LocalDateTime,
-    val date: String,
+    val lastUpdate: String?,
+    @SerializedName("date", alternate = ["time"])
+    val date: String?,
 )
 
 data class Air(
@@ -42,7 +44,8 @@ data class Air(
 
 data class AirQualityRank(
     val location: Location,
-    val aqi: Int
+    val aqi: String,
+    var no: String?=null,
 )
 
 data class MultiAirQualityResult(
@@ -50,7 +53,7 @@ data class MultiAirQualityResult(
     @SerializedName("daily", alternate = ["hourly"])
     val multi: List<AirQuality>,
     @SerializedName("last_update")
-    val lastUpdate: LocalDateTime,
+    val lastUpdate: String,
 )
 
 data class AirQualityResult(
@@ -59,13 +62,13 @@ data class AirQualityResult(
 )
 
 data class AirQualityFromServer(
-    val result: List<AirQualityResult>
+    val results: List<AirQualityResult>
 )
 
 data class MultiAirQualityFromServer(
-    val result: List<MultiAirQualityResult>
+    val results: List<MultiAirQualityResult>
 )
 
 data class AirQualityRankFromServer(
-    val result: List<AirQualityRank>
+    val results: List<AirQualityRank>
 )

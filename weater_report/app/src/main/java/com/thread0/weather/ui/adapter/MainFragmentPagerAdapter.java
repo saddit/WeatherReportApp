@@ -22,6 +22,11 @@ public class MainFragmentPagerAdapter extends FragmentStateAdapter {
         this.fragments = fragments;
     }
 
+    public void addFragment(Fragment fragment) {
+        fragments.add(fragment);
+        notifyItemInserted(fragments.size()-1);
+    }
+
     @NonNull
     @NotNull
     @Override

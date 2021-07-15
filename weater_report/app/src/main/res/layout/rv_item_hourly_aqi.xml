@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="com.thread0.weather.util.TimeUtils"/>
+        <import type="com.thread0.weather.data.constant.UIDataKt" />
+        <variable
+            name="quality"
+            type="com.thread0.weather.data.model.AirQuality" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:background="@color/black_38p_0">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/hour_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:shadowColor="@color/gray_4"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="5"
+            android:text="@{TimeUtils.INSTANCE.time2String(quality.date, `HH:mm`)}"
+            android:textColor="@color/bg_gray"
+            android:textSize="20sp"
+            tools:text="11:00" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/aqi_level"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@{quality.quality}"
+            android:textColor="@{UIDataKt.getAqiColor(quality.quality)}"
+            android:textSize="23sp"
+            android:textStyle="bold"
+            tools:text="优"
+            tools:textColor="@color/Green" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/hourly_temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@{quality.aqi}"
+            android:textColor="@{UIDataKt.getAqiColor(quality.quality)}"
+            android:textSize="20sp"
+            tools:text="17"
+            tools:textColor="@color/Green" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>
