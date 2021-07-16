@@ -59,7 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 android:text="@{location.name}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -68,13 +68,13 @@
                 tools:text="集美" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:text="@{TimeUtils.INSTANCE.time2String(quality.lastUpdate, `yyyy-MM-dd HH:mm:ss`)}"
                 android:id="@+id/date_time_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="16dp"
-                android:textSize="20sp"
+                android:text="@{TimeUtils.INSTANCE.time2String(quality.lastUpdate, `yyyy-MM-dd HH:mm:ss`)}"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/location_txt"
                 app:layout_constraintStart_toEndOf="@+id/location_txt"
                 app:layout_constraintTop_toTopOf="@+id/location_txt"
@@ -85,20 +85,20 @@
                 android:id="@+id/deploy_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="5dp"
                 android:text="@string/deploy_string"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/date_time_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/date_time_text"
                 app:layout_constraintTop_toTopOf="@+id/date_time_text"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintVertical_bias="0.0" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/rank_btn"
-                android:layout_width="100dp"
-                android:layout_height="44dp"
+                android:layout_width="80dp"
+                android:layout_height="31dp"
                 android:background="#B2EBF2"
                 android:shadowColor="@color/green"
                 android:text="@string/api_rank"
@@ -106,10 +106,10 @@
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.79"
+                app:layout_constraintHorizontal_bias="0.951"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.16" />
+                app:layout_constraintVertical_bias="0.024" />
 
             <com.google.android.flexbox.FlexboxLayout
                 android:id="@+id/flexboxLayout"
@@ -119,7 +119,7 @@
                 app:justifyContent="space_around"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.327"
+                app:layout_constraintVertical_bias="0.397"
                 tools:layout_editor_absoluteX="0dp">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
@@ -134,16 +134,17 @@
                         android:layout_gravity="center"
                         android:text="@{quality.pm25}"
                         android:textColor="@{UIDataKt.getAqiColor(quality.quality)}"
-                        android:textSize="25sp"
+                        android:textSize="18sp"
                         tools:text="20" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/pm25_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:text="@string/pm2_5"
                         android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         tools:layout_editor_absoluteX="16dp"
                         tools:layout_editor_absoluteY="213dp" />
 
@@ -161,13 +162,14 @@
                         android:layout_gravity="center"
                         android:text="@{quality.pm10}"
                         android:textColor="@{UIDataKt.getAqiColor(quality.quality)}"
-                        android:textSize="25sp"
+                        android:textSize="18sp"
                         tools:text="20" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/pm10_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:text="@string/pm10"
                         android:textColor="@color/black"
                         android:textSize="20sp"
@@ -187,13 +189,14 @@
                         android:layout_gravity="center"
                         android:text="@{quality.so2}"
                         android:textColor="@{UIDataKt.getAqiColor(quality.quality)}"
-                        android:textSize="25sp"
+                        android:textSize="18sp"
                         tools:text="20" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/so2_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:text="@string/so2"
                         android:textColor="@color/black"
                         android:textSize="20sp" />
@@ -209,15 +212,17 @@
                         android:id="@+id/no2_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:text="@{quality.no2}"
                         android:textColor="@{UIDataKt.getAqiColor(quality.quality)}"
-                        android:textSize="25sp"
+                        android:textSize="18sp"
                         tools:text="20" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/no2_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:text="@string/no2"
                         android:textColor="@color/black"
                         android:textSize="20sp" />
@@ -232,15 +237,17 @@
                         android:id="@+id/o3_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:text="@{quality.o3}"
                         android:textColor="@{UIDataKt.getAqiColor(quality.quality)}"
-                        android:textSize="25sp"
+                        android:textSize="18sp"
                         tools:text="20" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/o3_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:text="@string/o3"
                         android:textColor="@color/black"
                         android:textSize="20sp"
@@ -260,13 +267,14 @@
                         android:layout_gravity="center"
                         android:text="@{quality.co}"
                         android:textColor="@{UIDataKt.getAqiColor(quality.quality)}"
-                        android:textSize="25sp"
+                        android:textSize="18sp"
                         tools:text="20" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/co_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:text="@string/co"
                         android:textColor="@color/black"
                         android:textSize="20sp" />
@@ -276,12 +284,12 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_hourly_aqi"
                 android:layout_width="match_parent"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="44dp"
                 android:orientation="horizontal"
-                android:layout_height="90dp"
-                android:layout_marginTop="20dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.333"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/flexboxLayout"
                 tools:listitem="@layout/rv_item_hourly_aqi" />
@@ -315,13 +323,12 @@
                 android:text="@{quality.aqi}"
                 android:textColor="@{UIDataKt.getAqiColor(quality.quality)}"
                 android:textSize="80sp"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.097"
+                app:layout_constraintHorizontal_bias="0.08"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.123"
+                app:layout_constraintVertical_bias="0.149"
                 tools:text="40"
                 tools:textColor="@color/green" />
 
@@ -329,14 +336,14 @@
                 android:id="@+id/textView19"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="24dp"
                 android:text="@{quality.quality}"
                 android:textColor="@{UIDataKt.getAqiColor(quality.quality)}"
                 android:textSize="30sp"
                 app:layout_constraintBottom_toBottomOf="@+id/aqi_now_value"
                 app:layout_constraintStart_toEndOf="@+id/aqi_now_value"
                 app:layout_constraintTop_toTopOf="@+id/aqi_now_value"
-                app:layout_constraintVertical_bias="0.236"
+                app:layout_constraintVertical_bias="0.347"
                 tools:text="优"
                 tools:textColor="@color/green" />
 

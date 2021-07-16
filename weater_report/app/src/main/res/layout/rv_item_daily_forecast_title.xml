@@ -4,7 +4,7 @@
     android:id="@+id/item_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_shade_gray"
+    android:background="@color/black_38p_0"
     android:paddingStart="@dimen/padding_normal"
     android:paddingTop="@dimen/padding_normal_half"
     android:paddingEnd="@dimen/padding_normal"
@@ -22,7 +22,7 @@
         android:shadowRadius="2"
         android:text="@string/week"
         android:textColor="@color/black"
-        android:textSize="20sp" />
+        android:textSize="18sp" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_date"
@@ -36,7 +36,7 @@
         android:shadowRadius="2"
         android:text="@string/date"
         android:textColor="@color/black"
-        android:textSize="20sp" />
+        android:textSize="18sp" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_weather"
@@ -51,7 +51,7 @@
         android:shadowRadius="2"
         android:text="@string/temperature"
         android:textColor="@color/black"
-        android:textSize="20sp" />
+        android:textSize="18sp" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_low_temperature"
@@ -66,7 +66,7 @@
         android:shadowRadius="2"
         android:text="@string/lowest"
         android:textColor="@color/black"
-        android:textSize="20sp" />
+        android:textSize="18sp" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_high_temperature"
@@ -81,6 +81,6 @@
         android:shadowRadius="2"
         android:text="@string/highest"
         android:textColor="@color/black"
-        android:textSize="20sp" />
+        android:textSize="18sp" />
 
 </LinearLayout>

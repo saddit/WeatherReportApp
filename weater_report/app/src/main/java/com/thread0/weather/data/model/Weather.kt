@@ -40,7 +40,7 @@ data class Weather(
     @SerializedName("code", alternate = ["code_day"])
     val code: Int?,
     val code_night: Int?,
-    val temperature: Int?,
+    var temperature: Int?,
     @SerializedName("feels_like")
     val feelsLike: Int?,
     val pressure: Int?,

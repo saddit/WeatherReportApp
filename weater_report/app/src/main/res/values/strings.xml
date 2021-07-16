@@ -57,4 +57,5 @@
     <string name="co">CO</string>
     <string name="deploy_string">发布</string>
     <string name="api_rank">质量排行</string>
+    <string name="port_msg_text">港口信息</string>
 </resources>

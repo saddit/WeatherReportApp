@@ -29,18 +29,18 @@
             android:shadowRadius="5"
             android:text="@{TimeUtils.INSTANCE.time2String(quality.date, `HH:mm`)}"
             android:textColor="@color/bg_gray"
-            android:textSize="20sp"
+            android:textSize="18sp"
             tools:text="11:00" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/aqi_level"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@{quality.quality}"
             android:textColor="@{UIDataKt.getAqiColor(quality.quality)}"
-            android:textSize="23sp"
+            android:textSize="22sp"
             android:textStyle="bold"
             tools:text="优"
             tools:textColor="@color/Green" />
@@ -52,7 +52,7 @@
             android:layout_gravity="center"
             android:text="@{quality.aqi}"
             android:textColor="@{UIDataKt.getAqiColor(quality.quality)}"
-            android:textSize="20sp"
+            android:textSize="18sp"
             tools:text="17"
             tools:textColor="@color/Green" />
 

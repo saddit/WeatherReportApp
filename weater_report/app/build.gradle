@@ -80,7 +80,8 @@ dependencies {
     // 子模块核心
     implementation 'top.xuqingquan:scaffold:3.0.2'
     implementation 'top.xuqingquan:utils:3.0.2'
-
+    //中文转拼音
+    implementation 'com.github.open-android:pinyin4j:2.5.0'
     // viewpager2
     implementation rootProject.ext.deps.viewpager2
     // room

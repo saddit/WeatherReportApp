@@ -24,14 +24,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            tools:text="11:00"
             android:text="@{TimeUtils.INSTANCE.time2String(weather.time, `HH:mm`)}"
             android:textColor="@color/bg_gray"
-            android:textSize="25sp" />
+            android:textSize="20sp" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/weather_icon"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
             android:layout_gravity="center"
             tools:srcCompat="@mipmap/weather_icon_4" />
 
@@ -42,7 +43,8 @@
             android:layout_gravity="center"
             android:text="@{weather.temperature.toString() + `°`}"
             android:textColor="@color/bg_gray"
-            android:textSize="25sp" />
+            tools:text="多云"
+            android:textSize="20sp" />
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>

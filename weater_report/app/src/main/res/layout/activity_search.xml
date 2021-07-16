@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_return">
 
-        <EditText
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/et_search"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

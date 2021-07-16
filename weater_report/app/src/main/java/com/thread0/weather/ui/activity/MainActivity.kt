@@ -3,22 +3,43 @@
  */
 package com.thread0.weather.ui.activity
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
-import androidx.activity.result.ActivityResultLauncher
+import android.util.Log
+import android.view.ActionMode
+import android.widget.Toast
+import android.widget.Toast.LENGTH_SHORT
+import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.tencent.mmkv.MMKV
+import com.thread0.weather.app.AppDatabase
+import com.thread0.weather.data.constant.LOCATION_SAVE_KEY
+import com.thread0.weather.data.constant.PERM_LOCATION_REQ_CODE
+import com.thread0.weather.data.constant.SEARCH_REQ_CODE
+import com.thread0.weather.data.constant.SEARCH_RES_KEY
+import com.thread0.weather.data.dao.CityDao
+import com.thread0.weather.data.model.City
 import com.thread0.weather.data.model.Location
+import com.thread0.weather.data.model.Weather
 import com.thread0.weather.databinding.ActivityMainBinding
 import com.thread0.weather.net.service.WeatherService
 import com.thread0.weather.ui.adapter.MainFragmentPagerAdapter
 import com.thread0.weather.ui.fragment.WeatherFragment
+import com.thread0.weather.util.AMapLocationUtils
+import com.thread0.weather.util.PinyinUtils
 import kotlinx.coroutines.*
 import top.xuqingquan.app.ScaffoldConfig
 import top.xuqingquan.base.view.activity.SimpleActivity
 import top.xuqingquan.extension.launch
 import top.xuqingquan.utils.startActivity
 import top.xuqingquan.utils.startActivityForResult
+import java.util.*
+import java.util.concurrent.ConcurrentSkipListSet
 
 /**
  *@ClassName: MainActivity
@@ -50,27 +71,24 @@ class MainActivity : SimpleActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var locations: Set<String>
+    private lateinit var locations: ConcurrentSkipListSet<String>
 
-    private  val locationObjects: MutableList<Location> = mutableListOf()
+    private val locationObjects: MutableList<Location> = mutableListOf()
 
     private val weatherService: WeatherService = ScaffoldConfig.getRepositoryManager().obtainRetrofitService(
         WeatherService::class.java
     )
 
-    companion object {
-        val LOCATION_SAVE_KEY = "savedLocation"
-        val SEARCH_REQ_CODE = 0x4a22fff
-        val SEARCH_RES_KEY = "search_result_key"
-    }
+    private val cityDao = AppDatabase.instance!!.getCityDao()
 
     @DelicateCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        loadLocations()
+        initUI()
         initEvent()
+        loadLocations()
         launch(Dispatchers.IO,{
             initPager()
         },{
@@ -79,29 +97,73 @@ class MainActivity : SimpleActivity() {
     }
 
     private fun loadLocations() {
-//        val locationNameSet = MMKV.defaultMMKV()!!.decodeStringSet(LOCATION_SAVE_KEY);
-//        if (locationNameSet != null) {
-//            locations = locationNameSet
-//        };
-        locations = setOf("beijing")
+        val locationNameSet = MMKV.defaultMMKV()!!.decodeStringSet(LOCATION_SAVE_KEY);
+        if (locationNameSet != null) {
+            Log.i("main_activity", "locations init from MMKV")
+            locations = ConcurrentSkipListSet(locationNameSet)
+        } else {
+            Log.i("sjh_main_activity", "locations init from AMap")
+            locations = ConcurrentSkipListSet()
+            requestLocatePerm()
+        }
+    }
+
+    private fun requestLocatePerm() {
+        if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERM_LOCATION_REQ_CODE)
+        } else {
+            useAMapLocate()
+        }
+    }
+
+    private fun useAMapLocate() {
+        AMapLocationUtils.getInstance().startLocation()
+        AMapLocationUtils.getInstance().liveData.observe(this, {
+            AMapLocationUtils.getInstance().stopLocation()
+            AMapLocationUtils.getInstance().destroyLocation()
+            launch(Dispatchers.IO,{
+                val resultPhonetic = PinyinUtils.translate(it.district)
+                Log.i("sjh_main_ac", "AMap locate $resultPhonetic")
+                addPage(PinyinUtils.translate(it.district.replace(Regex("[区县市]+$"), "")))
+            },{
+                Log.e("sjh_main_ac", it.stackTraceToString())
+            })
+        })
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PERM_LOCATION_REQ_CODE) {
+            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "定位权限获取失败，请手动添加地址", LENGTH_SHORT).show()
+            } else {
+                useAMapLocate()
+            }
+        }
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         MMKV.defaultMMKV()!!.encode(LOCATION_SAVE_KEY, locations)
+        Log.i("sjh_main_activity", "[onDestroy] MMKV encode $locations")
+        super.onDestroy()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode != RESULT_OK || data == null) {
-            return;
+            return
         }
         if(requestCode == SEARCH_REQ_CODE) {
-            val loca = data.getStringExtra(SEARCH_RES_KEY)
+            val city: City = data.getSerializableExtra(SEARCH_RES_KEY) as City
             launch(Dispatchers.IO,{
-                addPage(loca)
+                addPage(city.phonetic)
             },{
-                it.printStackTrace()
+                Log.e("sjh_main_ac", it.stackTraceToString())
             })
         }
     }
@@ -119,25 +181,43 @@ class MainActivity : SimpleActivity() {
         if(location == null) return
         val result = weatherService.getLocationCurrentWeather(location)!!.results[0]
         locationObjects.add(result.location)
+        locations.add(location.toLowerCase(Locale.ROOT))
         withContext(Dispatchers.Main) {
             (binding.weatherViewPager.adapter as MainFragmentPagerAdapter).addFragment(WeatherFragment.newInstance(result))
         }
     }
 
+    private fun initUI() {
+        binding.weatherViewPager.adapter = MainFragmentPagerAdapter(supportFragmentManager, lifecycle, arrayListOf())
+        binding.weatherViewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                val cityId = locationObjects[position].id
+                launch(Dispatchers.IO,{
+                    Log.i("sjh_main_ac", "viewPager selected fragment with city $cityId")
+                    val city = cityDao.queryByCode(cityId)
+                    Log.i("sjh_main_ac", "query by code result $city")
+                    withContext(Dispatchers.Main) {
+                        binding.mainTitle.text = city?.name ?: "ERROR"
+                    }
+                },{
+                    Log.e("sjh_main_ac", it.stackTraceToString())
+                })
+            }
+        })
+    }
+
     private suspend fun initPager() {
-        val fragments = mutableListOf<WeatherFragment>()
+        val fragments = mutableListOf<Fragment>()
+        val tempList = mutableListOf<Weather>()
         for (location in locations) {
             val result = weatherService.getLocationCurrentWeather(location)!!.results[0]
             fragments.add(WeatherFragment.newInstance(result));
             locationObjects.add(result.location)
+            tempList.add(result.now)
         }
+        Log.i("sjh_main_ac", "get weather(${tempList.size}) $tempList")
         withContext(Dispatchers.Main){
-            binding.weatherViewPager.adapter = MainFragmentPagerAdapter(supportFragmentManager, lifecycle, fragments.toList())
-            binding.weatherViewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    binding.mainTitle.text = locationObjects[position].path.replace(',','/')
-                }
-            })
+            (binding.weatherViewPager.adapter as MainFragmentPagerAdapter).addFragmentRange(fragments)
         }
     }
 }

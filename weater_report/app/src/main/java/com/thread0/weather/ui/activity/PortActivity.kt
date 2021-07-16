@@ -4,8 +4,16 @@
 package com.thread0.weather.ui.activity
 
 import android.os.Bundle
+import android.util.Log
+import com.thread0.weather.app.AppDatabase
+import com.thread0.weather.data.constant.PRAM_LOCATION
+import com.thread0.weather.data.model.Port
 import com.thread0.weather.databinding.ActivityPortBinding
+import com.thread0.weather.ui.adapter.PortListAdapter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import top.xuqingquan.base.view.activity.SimpleActivity
+import top.xuqingquan.extension.launch
 
 /**
 *@ClassName: PortActivity
@@ -18,12 +26,36 @@ class PortActivity : SimpleActivity() {
 
     private lateinit var binding: ActivityPortBinding
 
+    private lateinit var portList: List<Port>
+
+    private val portDao = AppDatabase.instance!!.getPortDao()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPortBinding.inflate(layoutInflater)
         setContentView(binding.root)
         // 设置点击事件
         setClickEvent()
+        val locationId = intent.getStringExtra(PRAM_LOCATION)
+        if(locationId != null) {
+            launch(Dispatchers.IO,{
+                initData(locationId)
+            },{
+                Log.e("sjh_port_ac", it.stackTraceToString())
+            })
+        }
+    }
+
+    private suspend fun initData(id:String) {
+        portList = portDao.queryByCityCode(id)
+        withContext(Dispatchers.Main) {
+            initUI()
+        }
+    }
+
+    private fun initUI() {
+        binding.recyclerView.adapter = PortListAdapter(portList)
     }
 
     private fun setClickEvent() {

@@ -11,20 +11,29 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 public class MainFragmentPagerAdapter extends FragmentStateAdapter {
 
-    private final List<Fragment> fragments;
+    private final ArrayList<Fragment> fragments;
 
     public MainFragmentPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, List<Fragment> fragments) {
         super(fragmentManager, lifecycle);
-        this.fragments = fragments;
+        this.fragments = new ArrayList<>(fragments);
     }
 
     public void addFragment(Fragment fragment) {
         fragments.add(fragment);
         notifyItemInserted(fragments.size()-1);
+    }
+
+    public void addFragmentRange(Collection<Fragment> data) {
+        int oldPos = fragments.size()-1;
+        fragments.addAll(data);
+        notifyItemRangeInserted(oldPos, fragments.size());
     }
 
     @NonNull
