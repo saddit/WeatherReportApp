@@ -10,12 +10,17 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.ActionMode
+import android.view.View
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
+import androidx.core.view.forEach
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
+import com.huawei.hms.utils.UIUtil
 import com.tencent.mmkv.MMKV
 import com.thread0.weather.app.AppDatabase
 import com.thread0.weather.data.constant.LOCATION_SAVE_KEY
@@ -32,6 +37,7 @@ import com.thread0.weather.ui.adapter.MainFragmentPagerAdapter
 import com.thread0.weather.ui.fragment.WeatherFragment
 import com.thread0.weather.util.AMapLocationUtils
 import com.thread0.weather.util.PinyinUtils
+import com.thread0.weather.util.UiUtils
 import kotlinx.coroutines.*
 import top.xuqingquan.app.ScaffoldConfig
 import top.xuqingquan.base.view.activity.SimpleActivity
@@ -40,6 +46,8 @@ import top.xuqingquan.utils.startActivity
 import top.xuqingquan.utils.startActivityForResult
 import java.util.*
 import java.util.concurrent.ConcurrentSkipListSet
+import kotlin.collections.ArrayList
+import kotlin.collections.HashSet
 
 /**
  *@ClassName: MainActivity
@@ -71,9 +79,9 @@ class MainActivity : SimpleActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var locations: ConcurrentSkipListSet<String>
+    private lateinit var locations: LinkedList<String>
 
-    private val locationObjects: MutableList<Location> = mutableListOf()
+    private val locationObjects: LinkedList<City> = LinkedList()
 
     private val weatherService: WeatherService = ScaffoldConfig.getRepositoryManager().obtainRetrofitService(
         WeatherService::class.java
@@ -93,17 +101,17 @@ class MainActivity : SimpleActivity() {
             initPager()
         },{
           it.printStackTrace()
-        },{})
+        })
     }
 
     private fun loadLocations() {
         val locationNameSet = MMKV.defaultMMKV()!!.decodeStringSet(LOCATION_SAVE_KEY);
         if (locationNameSet != null) {
             Log.i("main_activity", "locations init from MMKV")
-            locations = ConcurrentSkipListSet(locationNameSet)
+            locations = LinkedList(locationNameSet)
         } else {
             Log.i("sjh_main_activity", "locations init from AMap")
-            locations = ConcurrentSkipListSet()
+            locations = LinkedList()
             requestLocatePerm()
         }
     }
@@ -122,9 +130,9 @@ class MainActivity : SimpleActivity() {
             AMapLocationUtils.getInstance().stopLocation()
             AMapLocationUtils.getInstance().destroyLocation()
             launch(Dispatchers.IO,{
-                val resultPhonetic = PinyinUtils.translate(it.district)
-                Log.i("sjh_main_ac", "AMap locate $resultPhonetic")
-                addPage(PinyinUtils.translate(it.district.replace(Regex("[区县市]+$"), "")))
+                val phonetic = PinyinUtils.translate(it.district.replace(Regex("[区县市]+$"), ""))
+                val city = cityDao.queryByPhonetic(phonetic)
+                addPage(city)
             },{
                 Log.e("sjh_main_ac", it.stackTraceToString())
             })
@@ -147,7 +155,7 @@ class MainActivity : SimpleActivity() {
     }
 
     override fun onDestroy() {
-        MMKV.defaultMMKV()!!.encode(LOCATION_SAVE_KEY, locations)
+        MMKV.defaultMMKV()!!.encode(LOCATION_SAVE_KEY, HashSet(locations))
         Log.i("sjh_main_activity", "[onDestroy] MMKV encode $locations")
         super.onDestroy()
     }
@@ -161,7 +169,7 @@ class MainActivity : SimpleActivity() {
         if(requestCode == SEARCH_REQ_CODE) {
             val city: City = data.getSerializableExtra(SEARCH_RES_KEY) as City
             launch(Dispatchers.IO,{
-                addPage(city.phonetic)
+                addPage(city)
             },{
                 Log.e("sjh_main_ac", it.stackTraceToString())
             })
@@ -175,47 +183,67 @@ class MainActivity : SimpleActivity() {
         binding.addCityBtn.setOnClickListener{
             startActivityForResult<SearchActivity>(SEARCH_REQ_CODE)
         }
+        binding.mainTitle.setOnClickListener{
+            AlertDialog.Builder(this)
+                .setMessage("确认删除这个地点吗？")
+                .setTitle("移除改地址")
+                .setPositiveButton("确认") { i,v->
+                    val adapter = binding.weatherViewPager.adapter!!
+                    if(adapter.itemCount == 1){
+                        UiUtils.showToast("至少保留一个页面")
+                    } else {
+                        removeFragment()
+                    }
+                }.create().show()
+        }
     }
 
-    private suspend fun addPage(location: String?) {
+    private fun removeFragment() {
+        val currentItem = binding.weatherViewPager.currentItem
+        (binding.weatherViewPager.adapter as MainFragmentPagerAdapter).removeFragment(currentItem)
+        locations.removeAt(currentItem)
+        locationObjects.removeAt(currentItem)
+        thisOnPageSelected(currentItem)
+    }
+
+    private suspend fun addPage(location: City?) {
         if(location == null) return
-        val result = weatherService.getLocationCurrentWeather(location)!!.results[0]
-        locationObjects.add(result.location)
-        locations.add(location.toLowerCase(Locale.ROOT))
+        val result = weatherService.getLocationCurrentWeather(location.code)!!.results[0]
+        locationObjects.add(location)
+        locations.add(location.phonetic.toLowerCase(Locale.ROOT))
         withContext(Dispatchers.Main) {
-            (binding.weatherViewPager.adapter as MainFragmentPagerAdapter).addFragment(WeatherFragment.newInstance(result))
+            val adapter = binding.weatherViewPager.adapter
+            (adapter as MainFragmentPagerAdapter).addFragment(WeatherFragment.newInstance(result))
+            binding.weatherViewPager.currentItem = adapter.itemCount-1
         }
+    }
+
+    private fun thisOnPageSelected(position: Int) {
+        val city = locationObjects[position]
+        binding.mainTitle.text = city.name
     }
 
     private fun initUI() {
         binding.weatherViewPager.adapter = MainFragmentPagerAdapter(supportFragmentManager, lifecycle, arrayListOf())
         binding.weatherViewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
-                val cityId = locationObjects[position].id
-                launch(Dispatchers.IO,{
-                    Log.i("sjh_main_ac", "viewPager selected fragment with city $cityId")
-                    val city = cityDao.queryByCode(cityId)
-                    Log.i("sjh_main_ac", "query by code result $city")
-                    withContext(Dispatchers.Main) {
-                        binding.mainTitle.text = city?.name ?: "ERROR"
-                    }
-                },{
-                    Log.e("sjh_main_ac", it.stackTraceToString())
-                })
+                thisOnPageSelected(position)
             }
         })
     }
 
     private suspend fun initPager() {
         val fragments = mutableListOf<Fragment>()
-        val tempList = mutableListOf<Weather>()
         for (location in locations) {
             val result = weatherService.getLocationCurrentWeather(location)!!.results[0]
-            fragments.add(WeatherFragment.newInstance(result));
-            locationObjects.add(result.location)
-            tempList.add(result.now)
+            fragments.add(WeatherFragment.newInstance(result))
+            launch(Dispatchers.IO,{
+                val city = cityDao.queryByCode(result.location.id)!!
+                locationObjects.add(city)
+            },{
+                Log.e("sjh_main_ac", it.stackTraceToString())
+            })
         }
-        Log.i("sjh_main_ac", "get weather(${tempList.size}) $tempList")
         withContext(Dispatchers.Main){
             (binding.weatherViewPager.adapter as MainFragmentPagerAdapter).addFragmentRange(fragments)
         }

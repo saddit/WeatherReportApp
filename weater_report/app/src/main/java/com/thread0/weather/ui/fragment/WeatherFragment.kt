@@ -34,9 +34,11 @@ import java.lang.IllegalStateException
 class WeatherFragment : SwipeRefreshLayout.OnRefreshListener, Fragment() {
     private var binding: FragmentWeatherBinding? = null
     private var weather: Weather? = null
-    private var location: Location? = null
+    var location: Location? = null
     private var hourlyWeathers: List<Weather>? = null
     private var dailyWeathers: List<Weather>? = null
+
+
 
     private val weatherService: WeatherService = ScaffoldConfig.getRepositoryManager().obtainRetrofitService(
         WeatherService::class.java
@@ -145,6 +147,10 @@ class WeatherFragment : SwipeRefreshLayout.OnRefreshListener, Fragment() {
                 PRAM_LOCATION to location?.id
             )
         }
+    }
+
+    override fun toString(): String {
+        return "WeatherFragment(location=$location)"
     }
 
 

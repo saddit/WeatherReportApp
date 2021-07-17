@@ -18,7 +18,8 @@
             android:layout_gravity="start"
             android:background="#00FFFFFF"
             android:text="@string/hms_btn_text"
-            android:textColor="@color/bg_gray" />
+            android:textColor="@color/bg_gray"
+            android:textSize="15sp" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/main_title"
@@ -26,6 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textColor="@color/white"
+            tools:text="福建/厦门/集美"
             android:textSize="?attr/MediumText" />
 
         <androidx.appcompat.widget.AppCompatImageButton
@@ -33,6 +35,9 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="end"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="13dp"
+            android:layout_marginBottom="1dp"
             android:background="#00FFFFFF"
             android:padding="12dp"
             android:src="@drawable/ic_add" />

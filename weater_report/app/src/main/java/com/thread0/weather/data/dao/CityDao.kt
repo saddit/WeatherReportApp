@@ -18,5 +18,8 @@ interface CityDao {
     suspend fun queryByKeyword(keyword: String): List<City>
 
     @Query("select * from t_city where code = :code")
-    suspend fun queryByCode(code: String): City
+    suspend fun queryByCode(code: String): City?
+
+    @Query("select * from t_city where phonetic = :phonetic limit 1")
+    suspend fun queryByPhonetic(phonetic: String): City?
 }

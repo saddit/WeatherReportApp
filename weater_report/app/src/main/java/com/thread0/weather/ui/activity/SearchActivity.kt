@@ -74,6 +74,7 @@ class SearchActivity : SimpleActivity() {
 
     private fun returnResult(city:City) {
         val intent = Intent()
+        Log.i("sjh_search_ac","return result $city")
         intent.putExtra(SEARCH_RES_KEY, city)
         setResult(RESULT_OK, intent)
         finish()

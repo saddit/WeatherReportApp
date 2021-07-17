@@ -29,7 +29,7 @@
             android:shadowRadius="5"
             android:text="@{TimeUtils.INSTANCE.time2String(quality.date, `HH:mm`)}"
             android:textColor="@color/bg_gray"
-            android:textSize="18sp"
+            android:textSize="?attr/BigText"
             tools:text="11:00" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -40,7 +40,7 @@
             android:gravity="center"
             android:text="@{quality.quality}"
             android:textColor="@{UIDataKt.getAqiColor(quality.quality)}"
-            android:textSize="22sp"
+            android:textSize="?attr/LargeText"
             android:textStyle="bold"
             tools:text="优"
             tools:textColor="@color/Green" />
@@ -52,7 +52,7 @@
             android:layout_gravity="center"
             android:text="@{quality.aqi}"
             android:textColor="@{UIDataKt.getAqiColor(quality.quality)}"
-            android:textSize="18sp"
+            android:textSize="?attr/BigText"
             tools:text="17"
             tools:textColor="@color/Green" />
 
