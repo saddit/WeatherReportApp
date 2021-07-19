@@ -130,8 +130,11 @@ class MainActivity : SimpleActivity() {
             AMapLocationUtils.getInstance().stopLocation()
             AMapLocationUtils.getInstance().destroyLocation()
             launch(Dispatchers.IO,{
-                val phonetic = PinyinUtils.translate(it.district.replace(Regex("[区县市]+$"), ""))
+                val afterReplace = it.district.replace(Regex("[区县市]+$"), "")
+                Log.i("sjh_main_ac", "AMap located district $afterReplace")
+                val phonetic = PinyinUtils.translate(afterReplace)
                 val city = cityDao.queryByPhonetic(phonetic)
+                Log.i("sjh_main_ac", "city queried $city")
                 addPage(city)
             },{
                 Log.e("sjh_main_ac", it.stackTraceToString())
@@ -154,10 +157,10 @@ class MainActivity : SimpleActivity() {
         }
     }
 
-    override fun onDestroy() {
+    override fun onStop() {
         MMKV.defaultMMKV()!!.encode(LOCATION_SAVE_KEY, HashSet(locations))
-        Log.i("sjh_main_activity", "[onDestroy] MMKV encode $locations")
-        super.onDestroy()
+        Log.i("sjh_main_activity", "[onStop] MMKV encode $locations")
+        super.onStop()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

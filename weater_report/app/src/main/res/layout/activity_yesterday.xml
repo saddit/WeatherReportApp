@@ -45,13 +45,13 @@
             android:id="@+id/temperature_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="92dp"
+            android:layout_marginTop="100dp"
             android:text="@{weather.high + `°`}"
             android:textColor="@color/bg_gray"
             android:textSize="100sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.591"
+            app:layout_constraintHorizontal_bias="0.544"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
             tools:text="30°" />
@@ -114,11 +114,12 @@
             app:layout_constraintVertical_bias="0.0"
             tools:text="福建/厦门/集美" />
 
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/low_high_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="36dp"
             android:text="@{weather.high + `°/` + weather.low + `°`}"
             android:textColor="@color/bg_gray"
             android:textSize="20sp"
@@ -128,60 +129,39 @@
             tools:text="20°/18°" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/day_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="120dp"
-            android:layout_marginTop="11dp"
-            android:text="@string/day_text"
-            android:textColor="@color/bg_gray"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/low_high_text"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/night_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="11dp"
-            android:text="@string/night_text"
-            android:textColor="@color/bg_gray"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/day_weather"
-            app:layout_constraintTop_toBottomOf="@+id/low_high_text"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/day_weather"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{weather.weather}"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="310dp"
+            android:layout_marginEnd="10dp"
+            android:text="@{`白天:`+weather.weather}"
             android:textColor="@color/bg_gray"
             android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/day_text"
-            app:layout_constraintStart_toEndOf="@+id/day_text"
-            app:layout_constraintTop_toTopOf="@+id/day_text"
-            app:layout_constraintVertical_bias="0.0"
-            tools:text="多云" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/night_weather"
+            app:layout_constraintHorizontal_bias="0.605"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintVertical_bias="0.002"
+            tools:text="白天:多云" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/night_weather"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{weather.textNight}"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="310dp"
+            android:layout_marginEnd="100dp"
+            android:text="@{`夜晚:` + weather.textNight}"
             android:textColor="@color/bg_gray"
             android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/night_text"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/night_text"
-            app:layout_constraintTop_toTopOf="@+id/night_text"
-            app:layout_constraintVertical_bias="0.0"
-            tools:text="多云" />
+            app:layout_constraintStart_toEndOf="@+id/day_weather"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintVertical_bias="0.002"
+            tools:text="夜晚:多云" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
