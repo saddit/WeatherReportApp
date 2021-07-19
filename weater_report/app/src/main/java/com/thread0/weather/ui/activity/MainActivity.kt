@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.util.ArraySet
 import android.util.Log
 import android.view.ActionMode
+import android.view.Gravity
 import android.view.View
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
@@ -153,7 +154,7 @@ class MainActivity : SimpleActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == PERM_LOCATION_REQ_CODE) {
             if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "定位权限获取失败，请手动添加地址", LENGTH_SHORT).show()
+                UiUtils.showToast("定位权限获取失败，请手动添加地址", gravity = Gravity.CENTER)
             } else {
                 useAMapLocate()
             }
@@ -175,6 +176,10 @@ class MainActivity : SimpleActivity() {
         }
         if(requestCode == SEARCH_REQ_CODE) {
             val city: City = data.getSerializableExtra(SEARCH_RES_KEY) as City
+            if (locations.contains(city.code)) {
+                UiUtils.showToast("重复了哦",gravity = Gravity.CENTER)
+                return
+            }
             launch(Dispatchers.IO,{
                 addPage(city)
             },{
@@ -197,7 +202,7 @@ class MainActivity : SimpleActivity() {
                 .setPositiveButton("确认") { i,v->
                     val adapter = binding.weatherViewPager.adapter!!
                     if(adapter.itemCount == 1){
-                        UiUtils.showToast("至少保留一个页面")
+                        UiUtils.showToast("至少保留一个页面", gravity = Gravity.CENTER)
                     } else {
                         removeFragment()
                     }

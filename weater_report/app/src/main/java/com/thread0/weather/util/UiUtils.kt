@@ -20,13 +20,17 @@ object UiUtils {
     private var lastClickTime: Long = 0 //上次点击的时间
     private const val spaceTime = 500 //时间间隔
 
-    fun showToast(content:String, gravity: Int = Gravity.BOTTOM) {
+    fun showToast(content: String, gravity: Int = Gravity.BOTTOM, context: Context = ScaffoldConfig.getApplication(),) {
         val toast = Toast.makeText(
-            ScaffoldConfig.getApplication(),
+            context,
             content,
             if (content.length > 6) Toast.LENGTH_LONG else Toast.LENGTH_SHORT
         )
-        toast.setGravity(gravity, 0, 0)
+        toast.setGravity(gravity, 0, when(gravity) {
+            Gravity.BOTTOM->-200
+            Gravity.TOP->200
+            else->0
+        })
         toast.show()
     }
 
