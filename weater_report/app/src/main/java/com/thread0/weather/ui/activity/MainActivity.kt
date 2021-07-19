@@ -198,7 +198,7 @@ class MainActivity : SimpleActivity() {
         binding.mainTitle.setOnClickListener{
             AlertDialog.Builder(this)
                 .setMessage("确认删除这个地点吗？")
-                .setTitle("移除改地址")
+                .setTitle("移除地址")
                 .setPositiveButton("确认") { i,v->
                     val adapter = binding.weatherViewPager.adapter!!
                     if(adapter.itemCount == 1){
