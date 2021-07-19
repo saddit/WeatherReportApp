@@ -19,7 +19,7 @@
     <string name="highest">最高</string>
     <string name="rank">排名</string>
     <string name="city">城市</string>
-    <string name="car_restricted">机动车尾号限行</string>
+    <string name="car_restricted">尾号限行</string>
     <string name="port_search">港口查询</string>
 
     <string name="activity_yesterday">昨日天气</string>
@@ -33,7 +33,7 @@
 
     <string name="activity_air_quality_rank">空气质量排行榜</string>
 
-    <string name="activity_zodiac">农历、节气与生肖</string>
+    <string name="activity_zodiac">节气与生肖</string>
 
     <string name="activity_car_restricted_city">机动车尾号限行</string>
 
@@ -44,4 +44,18 @@
     <string name="location_name">经纬度：</string>
     <string name="water_level_name">水位基准：</string>
     <string name="port_info">港口信息</string>
+    <string name="hms_btn_text">HMS</string>
+    <string name="date_string">日期：</string>
+    <string name="location_string">地点：</string>
+    <string name="day_text">白天</string>
+    <string name="night_text">夜晚</string>
+    <string name="pm2_5">PM2.5</string>
+    <string name="pm10">PM10</string>
+    <string name="so2">SO2</string>
+    <string name="no2">NO2</string>
+    <string name="o3">O3</string>
+    <string name="co">CO</string>
+    <string name="deploy_string">发布</string>
+    <string name="api_rank">质量排行</string>
+    <string name="port_msg_text">港口信息</string>
 </resources>

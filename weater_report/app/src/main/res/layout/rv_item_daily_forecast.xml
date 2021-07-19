@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="com.thread0.weather.util.TimeUtils"/>
+        <variable
+            name="weather"
+            type="com.thread0.weather.data.model.Weather" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/item_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black_38p_0"
+        android:paddingStart="@dimen/padding_normal"
+        android:paddingEnd="@dimen/padding_normal"
+        android:paddingTop="@dimen/padding_normal_half"
+        android:paddingBottom="@dimen/padding_normal_half">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/week_text"
+            android:shadowColor="@color/gray_4"
+            android:shadowDx="0"
+            android:shadowDy="2"
+            android:shadowRadius="2"
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:text="@{TimeUtils.INSTANCE.getWeekByDate(weather.time)}"
+            android:textSize="?attr/BigText"
+            tools:text="星期二"
+            android:textColor="@color/bg_gray"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/date_text"
+            android:layout_width="0dp"
+            android:shadowColor="@color/gray_4"
+            android:shadowDx="0"
+            android:shadowDy="2"
+            android:shadowRadius="2"
+            android:textSize="?attr/BigText"
+            tools:text="07-28"
+            android:text="@{TimeUtils.INSTANCE.getMMdd(weather.time)}"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1.5"
+            android:textColor="@color/bg_gray"
+            android:textStyle="bold"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/weather_text"
+            android:shadowColor="@color/gray_4"
+            android:shadowDx="0"
+            android:shadowDy="2"
+            android:shadowRadius="2"
+            android:layout_width="0dp"
+            android:text="@{weather.weather}"
+            android:textSize="?attr/BigText"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2"
+            android:gravity="center"
+            tools:text="多云"
+            android:textColor="@color/bg_gray"
+            android:textStyle="bold"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/low_text"
+            android:shadowColor="@color/gray_4"
+            android:shadowDx="0"
+            android:shadowDy="2"
+            android:shadowRadius="2"
+            android:layout_width="0dp"
+            android:text="@{weather.low.toString()}"
+            android:textSize="?attr/BigText"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            tools:text="30"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:textColor="@color/bg_gray"
+            android:textStyle="bold"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/high_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:shadowColor="@color/gray_4"
+            android:shadowDx="0"
+            android:shadowDy="2"
+            android:shadowRadius="2"
+            android:text="@{weather.high.toString()}"
+            android:textColor="@color/bg_gray"
+            android:textSize="?attr/BigText"
+            tools:text="27"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+</layout>

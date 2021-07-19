@@ -3,11 +3,26 @@
  */
 package com.thread0.weather.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
+import android.view.Gravity
+import android.view.View
+import android.widget.Toast
+import com.thread0.weather.app.AppDatabase
+import com.thread0.weather.data.constant.SEARCH_RES_KEY
+import com.thread0.weather.data.model.City
 import com.thread0.weather.databinding.ActivitySearchBinding
+import com.thread0.weather.ui.adapter.CityListAdapter
+import com.thread0.weather.util.UiUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import top.xuqingquan.base.view.activity.SimpleActivity
+import top.xuqingquan.extension.launch
+import top.xuqingquan.utils.toast
+import kotlin.math.log
 
 /**
  *@ClassName: SearchActivity
@@ -19,20 +34,50 @@ class SearchActivity : SimpleActivity() {
 
     // view binding
     private lateinit var binding: ActivitySearchBinding
+    private val cityDao = AppDatabase.instance!!.getCityDao()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        // 设置点击事件
-        setClickEvent()
-        // 初始化数据与布局
-        initDataAndUI()
+        launch(Dispatchers.IO,{
+            // 初始化数据与布局
+            initDataAndUI()
+        },{
+            it.printStackTrace()
+        })
     }
 
-    private fun initDataAndUI() {
-        //TODO:1、获取数据库内保存的城市数据，通过RecycleView展示出来，供用户选择；
-        //      2、用户点击RecycleView后通过setResult()将所点击的城市数据传递出去，并关闭此界面。
+    private suspend fun initDataAndUI() {
+        val cityList = cityDao.queryLimit(50)
+        Log.i("sjh_search_ac", "query cities result ${cityList.size}")
+        withContext(Dispatchers.Main) {
+            binding.rvCityList.adapter = CityListAdapter(cityList)
+            setClickEvent()
+        }
+    }
+
+    private suspend fun searchCity(keyword: String) {
+        val cityList: List<City> = if(keyword.isEmpty()) {
+            cityDao.queryLimit(50)
+        } else {
+            cityDao.queryByKeyword("%$keyword%")
+        }
+        Log.i("sjh_search_ac", "search cities result ${cityList.size}")
+        withContext(Dispatchers.Main) {
+            (binding.rvCityList.adapter as CityListAdapter).setData(cityList)
+            if (cityList.isEmpty()) {
+                UiUtils.showToast("找不到该城市，换个词搜索吧", Gravity.CENTER);
+            }
+        }
+    }
+
+    private fun returnResult(city:City) {
+        val intent = Intent()
+        Log.i("sjh_search_ac","return result $city")
+        intent.putExtra(SEARCH_RES_KEY, city)
+        setResult(RESULT_OK, intent)
+        finish()
     }
 
     private fun setClickEvent() {
@@ -40,10 +85,14 @@ class SearchActivity : SimpleActivity() {
         binding.toolbar.setNavigationOnClickListener {
             finish()
         }
+        (binding.rvCityList.adapter as CityListAdapter).setOnClickCityListener { _, c, _ ->
+            returnResult(c)
+        }
         // 文字变化时刷新列表
         binding.etSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
+            }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 refreshCityList(s?.toString() ?: "")
             }
@@ -58,6 +107,10 @@ class SearchActivity : SimpleActivity() {
      * @param keyword 关键词
      */
     fun refreshCityList(keyword: String) {
-
+        launch(Dispatchers.IO,{
+            searchCity(keyword)
+        },{
+            it.printStackTrace()
+        })
     }
 }

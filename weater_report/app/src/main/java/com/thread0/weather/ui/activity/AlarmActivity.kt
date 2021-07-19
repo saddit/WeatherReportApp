@@ -4,6 +4,7 @@
 package com.thread0.weather.ui.activity
 
 import android.os.Bundle
+import com.tencent.mmkv.MMKV
 import com.thread0.weather.databinding.ActivityAlarmBinding
 import top.xuqingquan.base.view.activity.SimpleActivity
 
@@ -24,7 +25,6 @@ class AlarmActivity : SimpleActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAlarmBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         // 设置点击事件
         setClickEvent()
     }

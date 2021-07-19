@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="com.thread0.weather.util.TimeUtils"/>
+        <import type="com.thread0.weather.data.constant.UIDataKt"/>
+        <variable
+            name="quality"
+            type="com.thread0.weather.data.model.AirQuality" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/item_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black_38p_0"
+        android:paddingStart="@dimen/padding_normal"
+        android:paddingEnd="@dimen/padding_normal"
+        android:paddingTop="@dimen/padding_normal_half"
+        android:paddingBottom="@dimen/padding_normal_half">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_week_value"
+            android:shadowColor="@color/gray_4"
+            android:shadowDx="0"
+            android:shadowDy="2"
+            android:shadowRadius="2"
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:text="@{TimeUtils.INSTANCE.getWeekByDate(quality.date)}"
+            tools:text="星期三"
+            android:textSize="?attr/BigText"
+            android:textColor="@color/bg_gray"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_date_value"
+            android:layout_width="0dp"
+            android:shadowColor="@color/gray_4"
+            android:shadowDx="0"
+            android:shadowDy="2"
+            android:shadowRadius="2"
+            android:textSize="?attr/BigText"
+            android:text="@{quality.date}"
+            tools:text="2019-09-19"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1.5"
+            android:textColor="@color/bg_gray" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_aqi_value"
+            android:shadowColor="@color/gray_4"
+            android:shadowDx="0"
+            android:shadowDy="2"
+            android:shadowRadius="2"
+            android:layout_width="0dp"
+            android:text="@{quality.aqi}"
+            android:textSize="?attr/BigText"
+            tools:text="20"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:textColor="@{UIDataKt.getAqiColor(quality.quality)}"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_quality_value"
+            android:shadowColor="@color/gray_4"
+            android:shadowDx="0"
+            android:shadowDy="2"
+            android:shadowRadius="2"
+            android:layout_width="0dp"
+            android:text="@{quality.quality}"
+            android:textSize="?attr/BigText"
+            tools:text="良"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:textColor="@{UIDataKt.getAqiColor(quality.quality)}" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

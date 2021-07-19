@@ -6,10 +6,13 @@ package com.thread0.weather.data.constant
 /**
  *@FileName: IntentConstants
  *@Description: 传递参数的 KEY 常量
- * TODO:传递参数的KEY为常量时在这里进行定义
+ * 传递参数的KEY为常量时在这里进行定义
  *@Author: hongzf
  *@Date: 2021/5/28 6:26 下午 Created
  */
 
-//示例
-const val TEST_KEY = 100
+const val LOCATION_SAVE_KEY = "savedLocation"
+const val SEARCH_REQ_CODE = 0x4a22fff
+const val SEARCH_RES_KEY = "search_result_key"
+const val PERM_LOCATION_REQ_CODE = 0x38f901d
+const val PRAM_LOCATION = "location"

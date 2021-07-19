@@ -4,8 +4,18 @@
 package com.thread0.weather.ui.activity
 
 import android.os.Bundle
+import android.util.Log
+import com.thread0.weather.data.model.Location
+import com.thread0.weather.data.model.Weather
 import com.thread0.weather.databinding.ActivityYesterdayBinding
+import com.thread0.weather.net.service.WeatherService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import okhttp3.Dispatcher
+import top.xuqingquan.app.ScaffoldConfig
 import top.xuqingquan.base.view.activity.SimpleActivity
+import top.xuqingquan.extension.launch
+import java.lang.IllegalStateException
 
 /**
  *@ClassName: YesterdayActivity
@@ -18,6 +28,12 @@ import top.xuqingquan.base.view.activity.SimpleActivity
  */
 class YesterdayActivity : SimpleActivity() {
 
+    private lateinit var weather: Weather
+    private lateinit var location: Location
+
+    private val weatherService: WeatherService = ScaffoldConfig.getRepositoryManager().obtainRetrofitService(
+        WeatherService::class.java
+    )
     // view binding
     private lateinit var binding: ActivityYesterdayBinding
 
@@ -27,6 +43,28 @@ class YesterdayActivity : SimpleActivity() {
         setContentView(binding.root)
         // 设置点击事件
         setClickEvent()
+        onIntent()
+    }
+
+    private fun onIntent() {
+        val loca: String = intent.getStringExtra("location") ?: return
+        launch(Dispatchers.IO,{
+            initWeather(loca)
+        },{
+            it.printStackTrace();
+        })
+    }
+
+    private suspend fun initWeather(loca: String) {
+        val res = loca.let {
+            weatherService.getDailyWeather(location = it, start = -1, days = 1)!!.results[0]
+        }
+        weather = res.multi[0]
+        location = res.location
+        withContext(Dispatchers.Main) {
+            binding.weather = weather
+            binding.location = location
+        }
     }
 
     private fun setClickEvent() {

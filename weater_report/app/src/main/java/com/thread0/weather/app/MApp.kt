@@ -37,6 +37,8 @@ class MApp: Application() {
         ScaffoldConfig.getInstance(this)
             .setBaseUrl(WEATHER_URL)
             .setLevel(Level.NONE)
+        //Room 初始化
+        AppDatabase.initialize(this)
     }
 
     override fun onTerminate() {

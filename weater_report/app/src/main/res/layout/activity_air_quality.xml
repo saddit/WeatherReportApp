@@ -1,48 +1,352 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.activity.AirQualityActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/blue_00DEFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/ic_return">
+    <data>
+        <import type="com.thread0.weather.util.TimeUtils" />
+        <import type="com.thread0.weather.data.constant.UIDataKt" />
+        <variable
+            name="location"
+            type="com.thread0.weather.data.model.Location" />
+        <variable
+            name="quality"
+            type="com.thread0.weather.data.model.AirQuality" />
+    </data>
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@mipmap/bg_place"
+        tools:context=".ui.activity.AirQualityActivity">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/activity_air_quality"
-            android:textColor="@color/white"
-            android:textSize="?attr/MediumText" />
+            android:background="@color/blue_00DEFF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/ic_return">
 
-    </androidx.appcompat.widget.Toolbar>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/activity_air_quality"
+                android:textColor="@color/white"
+                android:textSize="?attr/MediumText" />
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+        </androidx.appcompat.widget.Toolbar>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintVertical_bias="0.0">
 
             <!--数据展示相关的view在此处布局-->
 
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/location_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:textSize="?attr/MediumText"
+                android:text="@{location.name}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.029"
+                tools:text="集美" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/date_time_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="16dp"
+                android:text="@{TimeUtils.INSTANCE.time2String(quality.lastUpdate, `yyyy-MM-dd HH:mm:ss`)}"
+                android:textSize="?attr/MediumText"
+                app:layout_constraintBottom_toBottomOf="@+id/location_txt"
+                app:layout_constraintStart_toEndOf="@+id/location_txt"
+                app:layout_constraintTop_toTopOf="@+id/location_txt"
+                app:layout_constraintVertical_bias="1.0"
+                tools:text="2021-08-23 12:22:11" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/deploy_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@string/deploy_string"
+                android:textSize="?attr/MediumText"
+                app:layout_constraintBottom_toBottomOf="@+id/date_time_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/date_time_text"
+                app:layout_constraintTop_toTopOf="@+id/date_time_text"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/rank_btn"
+                android:layout_width="80dp"
+                android:layout_height="31dp"
+                android:background="#B2EBF2"
+                android:shadowColor="@color/green"
+                android:text="@string/api_rank"
+                android:textColor="@color/colorAccent"
+                android:textSize="?attr/MediumText"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.951"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.024" />
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/flexboxLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:flexDirection="row"
+                app:justifyContent="space_around"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.397"
+                tools:layout_editor_absoluteX="0dp">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/pm25_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@{quality.pm25}"
+                        android:textColor="@{UIDataKt.getAqiColor(quality.quality)}"
+                        android:textSize="18sp"
+                        tools:text="20" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/pm25_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/pm2_5"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        tools:layout_editor_absoluteX="16dp"
+                        tools:layout_editor_absoluteY="213dp" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/pm10_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@{quality.pm10}"
+                        android:textColor="@{UIDataKt.getAqiColor(quality.quality)}"
+                        android:textSize="18sp"
+                        tools:text="20" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/pm10_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/pm10"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        tools:layout_editor_absoluteX="72dp"
+                        tools:layout_editor_absoluteY="211dp" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/so2_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@{quality.so2}"
+                        android:textColor="@{UIDataKt.getAqiColor(quality.quality)}"
+                        android:textSize="18sp"
+                        tools:text="20" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/so2_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/so2"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/no2_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@{quality.no2}"
+                        android:textColor="@{UIDataKt.getAqiColor(quality.quality)}"
+                        android:textSize="18sp"
+                        tools:text="20" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/no2_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/no2"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/o3_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@{quality.o3}"
+                        android:textColor="@{UIDataKt.getAqiColor(quality.quality)}"
+                        android:textSize="18sp"
+                        tools:text="20" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/o3_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/o3"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        tools:layout_editor_absoluteX="267dp"
+                        tools:layout_editor_absoluteY="205dp" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/textView10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@{quality.co}"
+                        android:textColor="@{UIDataKt.getAqiColor(quality.quality)}"
+                        android:textSize="18sp"
+                        tools:text="20" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/co_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/co"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </com.google.android.flexbox.FlexboxLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_hourly_aqi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="44dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/flexboxLayout"
+                tools:listitem="@layout/rv_item_hourly_aqi" />
+
+            <include
+                android:id="@+id/rv_aqi_title"
+                layout="@layout/rv_item_daily_aqi_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rv_hourly_aqi" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_daily_aqi"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:listitem="@layout/rv_item_daily_aqi"
+                app:layout_constraintTop_toBottomOf="@+id/rv_aqi_title" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/aqi_now_value"
+                android:layout_width="111dp"
+                android:layout_height="112dp"
+                android:gravity="center"
+                android:text="@{quality.aqi}"
+                android:textColor="@{UIDataKt.getAqiColor(quality.quality)}"
+                android:textSize="80sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.08"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.149"
+                tools:text="40"
+                tools:textColor="@color/green" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textView19"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:text="@{quality.quality}"
+                android:textColor="@{UIDataKt.getAqiColor(quality.quality)}"
+                android:textSize="30sp"
+                app:layout_constraintBottom_toBottomOf="@+id/aqi_now_value"
+                app:layout_constraintStart_toEndOf="@+id/aqi_now_value"
+                app:layout_constraintTop_toTopOf="@+id/aqi_now_value"
+                app:layout_constraintVertical_bias="0.347"
+                tools:text="优"
+                tools:textColor="@color/green" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.core.widget.NestedScrollView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

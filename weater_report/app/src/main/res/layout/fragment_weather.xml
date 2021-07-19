@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.fragment.WeatherFragment">
+
+    <data>
+        <import type="com.thread0.weather.data.model.Weather" alias="Wt" />
+        <variable
+            name="weather"
+            type="Wt" />
+        <variable
+            name="sun"
+            type="com.thread0.weather.data.model.Sun" />
+        <variable
+            name="moon"
+            type="com.thread0.weather.data.model.Moon" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@mipmap/bg_cloudy">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swiper_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/weather_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/sun_down"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/black_38p_0"
+                    app:layout_constraintBottom_toTopOf="@+id/hourly_rv"
+                    app:layout_constraintEnd_toStartOf="@+id/moon_down"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/ic_sunset" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingEnd="5dp"
+                        android:text="@{`日落`+sun.sunset}"
+                        android:textColor="@color/bg_gray"
+                        android:textSize="?attr/MediumText"
+                        tools:text="日落06:11" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/moon_down"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/black_38p_0"
+                    app:layout_constraintBottom_toTopOf="@+id/hourly_rv"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/ic_moon_sunset" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingEnd="5dp"
+                        android:text="@{`月落`+moon.set}"
+                        android:textColor="@color/bg_gray"
+                        android:textSize="?attr/MediumText"
+                        tools:text="月落06:11" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/moon_raise"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:background="@color/black_38p_0"
+                    app:layout_constraintBottom_toTopOf="@+id/moon_down"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.938">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/ic_moon_sunrise" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingEnd="5dp"
+                        android:text="@{`月出`+moon.rise}"
+                        android:textColor="@color/bg_gray"
+                        android:textSize="?attr/MediumText"
+                        tools:text="月出06:11" />
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/temperature_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:text="@{weather.temperature + `°`}"
+                    android:textColor="@color/bg_gray"
+                    android:textSize="100sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.544"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="30°" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/weather_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@{weather.weather}"
+                    android:textColor="@color/bg_gray"
+                    android:textSize="25sp"
+                    tools:text="阴天"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.498"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/temperature_high_low" />
+
+                <LinearLayout
+                    android:id="@+id/sun_raise"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:background="@color/black_38p_0"
+                    app:layout_constraintBottom_toTopOf="@+id/sun_down"
+                    app:layout_constraintEnd_toStartOf="@+id/moon_raise"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.938">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/ic_sunrise" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingEnd="5dp"
+                        android:text="@{`日出`+sun.sunrise}"
+                        android:textColor="@color/bg_gray"
+                        android:textSize="?attr/MediumText"
+                        tools:text="日出06:11" />
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/temperature_high_low"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="20/12"
+                    android:textColor="@color/bg_gray"
+                    android:textSize="25sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/temperature_text" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/hourly_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="148dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/weather_desc"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/rv_item_hourly_weather" />
+
+                <include
+                    android:id="@+id/rv_daily_title"
+                    layout="@layout/rv_item_daily_forecast_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/hourly_rv"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_daily"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rv_daily_title"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/car_resrict_btn"
+                    android:layout_width="72dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_shade_gray_rc"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:text="@string/car_restricted"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.05"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/temperature_text" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/zodiac_btn"
+                    android:layout_width="72dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_shade_gray_rc"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:text="@string/activity_zodiac"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toTopOf="@+id/port_btn"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.05"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/car_resrict_btn"
+                    app:layout_constraintVertical_bias="0.523" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/port_btn"
+                    android:layout_width="72dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_shade_gray_rc"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:text="@string/port_msg_text"
+                    android:textSize="12sp"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="@+id/temperature_text"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.05"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/alarm_btn"
+                    android:layout_width="72dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_shade_gray_rc"
+                    android:text="@string/activity_alarm"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.95"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/temperature_text" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/air_btn"
+                    android:layout_width="72dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_shade_gray_rc"
+                    android:text="@string/activity_air_quality"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toTopOf="@+id/yestoday_weather_btn"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.952"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/alarm_btn" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/yestoday_weather_btn"
+                    android:layout_width="72dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_shade_gray_rc"
+                    android:text="@string/activity_yesterday"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/temperature_text"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.949"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </FrameLayout>
+</layout>

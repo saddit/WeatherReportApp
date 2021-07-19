@@ -7,4 +7,6 @@ package com.thread0.weather.net
 const val WEATHER_URL = "https://api.seniverse.com"
 
 //TODO：需要更换自己申请的心知key
-const val WEATHER_PRIVATE_KEY = "SxVypvHxRUqGjBd9P"
+const val WEATHER_PRIVATE_KEY = "SiqHiqZwVpqNpHQNm"
+//const val WEATHER_PUBLIC_KEY = "PTaVV_MAAEA-_Xp3J"
+
