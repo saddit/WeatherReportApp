@@ -12,7 +12,8 @@ package com.thread0.weather.data.constant
  */
 
 const val LOCATION_SAVE_KEY = "savedLocation"
+const val PICS_REQ_CODE = 0x1239ff
 const val SEARCH_REQ_CODE = 0x4a22fff
 const val SEARCH_RES_KEY = "search_result_key"
 const val PERM_LOCATION_REQ_CODE = 0x38f901d
-const val PRAM_LOCATION = "location"
+const val PARAM_LOCATION = "location"

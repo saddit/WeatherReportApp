@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    >
+
+    <ImageView
+        android:id="@+id/tv_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_launcher_background"
+        />
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@id/tv_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:text="雨中漫步"
+        android:textSize="20sp"
+        />
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_img"
+        android:layout_marginLeft="10dp"
+        android:ellipsize="end"
+        android:layout_marginTop="10dp"
+        android:text="这是内容 、生活照的人像抠图，更换背景制作一些趣味的照片，或者对背景做虚化得到更美、更有艺术效果的照片。
+2、识别图像中的天空、植物、美食、猫狗、花朵、水面等、沙面、建筑、山峰等元素，针对这些元素做特殊的美化，比如让天空更蓝，水更清澈"
+        />
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_title"
+        android:layout_alignParentRight="true"
+        android:text="2021-7-14 17:28:33"
+        />
+</RelativeLayout>

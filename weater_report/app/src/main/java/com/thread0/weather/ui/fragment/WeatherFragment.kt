@@ -1,18 +1,16 @@
 package com.thread0.weather.ui.fragment
 
 import android.annotation.SuppressLint
-import android.opengl.Visibility
 import com.thread0.weather.net.service.WeatherService
 import android.os.Bundle
 import android.util.Log
-import android.util.MonthDisplayHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.thread0.weather.app.AppDatabase
-import com.thread0.weather.data.constant.PRAM_LOCATION
+import com.thread0.weather.data.constant.PARAM_LOCATION
 import com.thread0.weather.data.constant.getSky
 import com.thread0.weather.data.model.*
 import com.thread0.weather.ui.adapter.HourlyWeatherAdapter
@@ -24,7 +22,6 @@ import kotlinx.coroutines.*
 import top.xuqingquan.app.ScaffoldConfig
 import top.xuqingquan.extension.launch
 import top.xuqingquan.utils.startActivity
-import java.lang.IllegalStateException
 
 /**
  * A simple [Fragment] subclass.
@@ -145,22 +142,22 @@ class WeatherFragment : SwipeRefreshLayout.OnRefreshListener, Fragment() {
         }
         binding!!.alarmBtn.setOnClickListener {
             startActivity<AlarmActivity>(
-                PRAM_LOCATION to location?.id
+                PARAM_LOCATION to location?.id
             )
         }
         binding!!.airBtn.setOnClickListener {
             startActivity<AirQualityActivity>(
-                PRAM_LOCATION to location?.id
+                PARAM_LOCATION to location?.id
             )
         }
         binding!!.yestodayWeatherBtn.setOnClickListener {
             startActivity<YesterdayActivity>(
-                PRAM_LOCATION to location?.id
+                PARAM_LOCATION to location?.id
             )
         }
         binding!!.portBtn.setOnClickListener { 
             startActivity<PortActivity>(
-                PRAM_LOCATION to location?.id
+                PARAM_LOCATION to location?.id
             )
         }
     }

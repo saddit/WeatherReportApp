@@ -6,7 +6,7 @@ package com.thread0.weather.ui.activity
 import android.os.Bundle
 import android.util.Log
 import com.thread0.weather.app.AppDatabase
-import com.thread0.weather.data.constant.PRAM_LOCATION
+import com.thread0.weather.data.constant.PARAM_LOCATION
 import com.thread0.weather.data.model.Port
 import com.thread0.weather.databinding.ActivityPortBinding
 import com.thread0.weather.ui.adapter.PortListAdapter
@@ -37,7 +37,7 @@ class PortActivity : SimpleActivity() {
         setContentView(binding.root)
         // 设置点击事件
         setClickEvent()
-        val locationId = intent.getStringExtra(PRAM_LOCATION)
+        val locationId = intent.getStringExtra(PARAM_LOCATION)
         if(locationId != null) {
             launch(Dispatchers.IO,{
                 initData(locationId)

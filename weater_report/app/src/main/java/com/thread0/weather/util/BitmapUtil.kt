@@ -40,7 +40,7 @@ class BitmapUtil {
             return Bitmap.createBitmap(originBitmap, 0, 0, width, height, matrix, true)
         }
 
-        fun combineBitmapByColor(context: Context,bgColor: Int, targetWidth: Int, targetHeight: Int, foreground: Bitmap): Bitmap? {
+        fun combineBitmapByColor(bgColor: Int, targetWidth: Int, targetHeight: Int, foreground: Bitmap): Bitmap? {
             val newMap : Bitmap
             try {
                 newMap = Bitmap.createBitmap(targetWidth, targetHeight, Bitmap.Config.RGB_565)

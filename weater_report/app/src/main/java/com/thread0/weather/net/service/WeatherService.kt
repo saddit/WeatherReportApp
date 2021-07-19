@@ -3,6 +3,7 @@
  */
 package com.thread0.weather.net.service
 
+import com.thread0.weather.data.model.AlarmFromResult
 import com.thread0.weather.data.model.MultiWeatherFromServer
 import com.thread0.weather.data.model.WeatherFromServer
 import com.thread0.weather.net.WEATHER_PRIVATE_KEY
@@ -10,12 +11,13 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface WeatherService {
-    /**
-     * TODO：数据获取示例，仿照此处即可
-     *       val weatherService =
-     *          ScaffoldConfig.getRepositoryManager().obtainRetrofitService(WeatherService::class.java)
-     *       weatherService.getLocationCurrentWeather("xxxx")//获取返回数据
-     */
+
+    @GET("/v3/weather/alarm.json")
+    suspend fun getLocationCurrentAlarm(
+        @Query("location") location: String,
+        @Query("key") key: String= WEATHER_PRIVATE_KEY
+    ): AlarmFromResult?
+
     /**
      * 获取当天详细气象信息（完整）
      */
