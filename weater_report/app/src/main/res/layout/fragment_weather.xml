@@ -9,6 +9,12 @@
         <variable
             name="weather"
             type="Wt" />
+        <variable
+            name="sun"
+            type="com.thread0.weather.data.model.Sun" />
+        <variable
+            name="moon"
+            type="com.thread0.weather.data.model.Moon" />
     </data>
 
     <FrameLayout
@@ -26,11 +32,95 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <LinearLayout
+                    android:id="@+id/sun_down"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/black_38p_0"
+                    app:layout_constraintBottom_toTopOf="@+id/hourly_rv"
+                    app:layout_constraintEnd_toStartOf="@+id/moon_down"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/ic_sunset" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingEnd="5dp"
+                        android:text="@{`日落`+sun.sunset}"
+                        android:textColor="@color/bg_gray"
+                        android:textSize="?attr/MediumText"
+                        tools:text="日落06:11" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/moon_down"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/black_38p_0"
+                    app:layout_constraintBottom_toTopOf="@+id/hourly_rv"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/ic_moon_sunset" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingEnd="5dp"
+                        android:text="@{`月落`+moon.set}"
+                        android:textColor="@color/bg_gray"
+                        android:textSize="?attr/MediumText"
+                        tools:text="月落06:11" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/moon_raise"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:background="@color/black_38p_0"
+                    app:layout_constraintBottom_toTopOf="@+id/moon_down"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.938">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/ic_moon_sunrise" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingEnd="5dp"
+                        android:text="@{`月出`+moon.rise}"
+                        android:textColor="@color/bg_gray"
+                        android:textSize="?attr/MediumText"
+                        tools:text="月出06:11" />
+                </LinearLayout>
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/temperature_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="36dp"
+                    android:layout_marginTop="20dp"
                     android:gravity="center"
                     android:text="@{weather.temperature + `°`}"
                     android:textColor="@color/bg_gray"
@@ -50,10 +140,41 @@
                     android:text="@{weather.weather}"
                     android:textColor="@color/bg_gray"
                     android:textSize="25sp"
+                    tools:text="阴天"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.498"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/temperature_high_low" />
+
+                <LinearLayout
+                    android:id="@+id/sun_raise"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:background="@color/black_38p_0"
+                    app:layout_constraintBottom_toTopOf="@+id/sun_down"
+                    app:layout_constraintEnd_toStartOf="@+id/moon_raise"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.938">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/ic_sunrise" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingEnd="5dp"
+                        android:text="@{`日出`+sun.sunrise}"
+                        android:textColor="@color/bg_gray"
+                        android:textSize="?attr/MediumText"
+                        tools:text="日出06:11" />
+                </LinearLayout>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/temperature_high_low"
@@ -71,7 +192,7 @@
                     android:id="@+id/hourly_rv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="88dp"
+                    android:layout_marginTop="148dp"
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"

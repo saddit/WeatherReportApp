@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.ArraySet
 import android.util.Log
 import android.view.ActionMode
 import android.view.View
@@ -20,6 +21,7 @@ import androidx.core.view.forEach
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.internal.ParcelableSparseArray
 import com.huawei.hms.utils.UIUtil
 import com.tencent.mmkv.MMKV
 import com.thread0.weather.app.AppDatabase
@@ -48,10 +50,11 @@ import java.util.*
 import java.util.concurrent.ConcurrentSkipListSet
 import kotlin.collections.ArrayList
 import kotlin.collections.HashSet
+import kotlin.collections.LinkedHashSet
 
 /**
  *@ClassName: MainActivity
- *@Description: TODO: 1、进入界面首先获取已经保存的城市列表
+ *@Description:       1、进入界面首先获取已经保存的城市列表
  *                    2、未获取到列表需通过定位获取用户当前位置
  *                    3、获取用户定位前需判断用户是否授予定位权限
  *                    4、未授予定位权限需申请，申请后被拒绝需添加默认城市进入关注列表，并弹窗提示用户未未授予权限
@@ -105,13 +108,13 @@ class MainActivity : SimpleActivity() {
     }
 
     private fun loadLocations() {
+        locations = LinkedList()
         val locationNameSet = MMKV.defaultMMKV()!!.decodeStringSet(LOCATION_SAVE_KEY);
         if (locationNameSet != null) {
-            Log.i("main_activity", "locations init from MMKV")
-            locations = LinkedList(locationNameSet)
+            Log.i("sjh_main_activity", "locations init from MMKV decode:$locationNameSet")
+            locations.addAll(locationNameSet)
         } else {
             Log.i("sjh_main_activity", "locations init from AMap")
-            locations = LinkedList()
             requestLocatePerm()
         }
     }
@@ -157,8 +160,9 @@ class MainActivity : SimpleActivity() {
         }
     }
 
+
     override fun onStop() {
-        MMKV.defaultMMKV()!!.encode(LOCATION_SAVE_KEY, HashSet(locations))
+        MMKV.defaultMMKV()!!.encode(LOCATION_SAVE_KEY, LinkedHashSet(locations))
         Log.i("sjh_main_activity", "[onStop] MMKV encode $locations")
         super.onStop()
     }
@@ -206,14 +210,14 @@ class MainActivity : SimpleActivity() {
         (binding.weatherViewPager.adapter as MainFragmentPagerAdapter).removeFragment(currentItem)
         locations.removeAt(currentItem)
         locationObjects.removeAt(currentItem)
-        thisOnPageSelected(currentItem)
+        thisOnPageSelected(if(currentItem == locations.size) currentItem-1 else currentItem)
     }
 
     private suspend fun addPage(location: City?) {
         if(location == null) return
         val result = weatherService.getLocationCurrentWeather(location.code)!!.results[0]
         locationObjects.add(location)
-        locations.add(location.phonetic.toLowerCase(Locale.ROOT))
+        locations.add(location.code)
         withContext(Dispatchers.Main) {
             val adapter = binding.weatherViewPager.adapter
             (adapter as MainFragmentPagerAdapter).addFragment(WeatherFragment.newInstance(result))

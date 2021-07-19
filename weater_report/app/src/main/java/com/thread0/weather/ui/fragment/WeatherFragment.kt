@@ -2,10 +2,10 @@ package com.thread0.weather.ui.fragment
 
 import android.annotation.SuppressLint
 import android.opengl.Visibility
-import com.thread0.weather.data.model.Weather
 import com.thread0.weather.net.service.WeatherService
 import android.os.Bundle
 import android.util.Log
+import android.util.MonthDisplayHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,10 +14,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.thread0.weather.app.AppDatabase
 import com.thread0.weather.data.constant.PRAM_LOCATION
 import com.thread0.weather.data.constant.getSky
-import com.thread0.weather.data.model.Location
+import com.thread0.weather.data.model.*
 import com.thread0.weather.ui.adapter.HourlyWeatherAdapter
-import com.thread0.weather.data.model.WeatherResult
 import com.thread0.weather.databinding.FragmentWeatherBinding
+import com.thread0.weather.net.service.GeoService
 import com.thread0.weather.ui.activity.*
 import com.thread0.weather.ui.adapter.DailyWeatherAdapter
 import kotlinx.coroutines.*
@@ -37,11 +37,17 @@ class WeatherFragment : SwipeRefreshLayout.OnRefreshListener, Fragment() {
     var location: Location? = null
     private var hourlyWeathers: List<Weather>? = null
     private var dailyWeathers: List<Weather>? = null
+    private var sun: Sun? = null
+    private var moon: Moon? = null
 
 
 
     private val weatherService: WeatherService = ScaffoldConfig.getRepositoryManager().obtainRetrofitService(
         WeatherService::class.java
+    )
+
+    private val geoService: GeoService = ScaffoldConfig.getRepositoryManager().obtainRetrofitService(
+        GeoService::class.java
     )
 
     private val portCityDao = AppDatabase.instance!!.getPortCityDao()
@@ -66,8 +72,9 @@ class WeatherFragment : SwipeRefreshLayout.OnRefreshListener, Fragment() {
             setPortBtnVisibility()
             initHourly()
             initDaily()
+            initGeo()
         },{
-            it.printStackTrace()
+            Log.e("sjh_weather_fg",it.stackTraceToString())
         })
         return binding!!.root
     }
@@ -80,9 +87,18 @@ class WeatherFragment : SwipeRefreshLayout.OnRefreshListener, Fragment() {
         })
     }
 
+    private suspend fun initGeo() {
+        moon = geoService.getDailyMoonData(location = location!!.id)!!.results[0].moon[0]
+        sun = geoService.getDailySunData(location = location!!.id)!!.results[0].sun[0]
+        withContext(Dispatchers.IO) {
+            binding!!.sun = sun
+            binding!!.moon = moon
+        }
+    }
+
     private suspend fun freshWeather() {
         val result =
-            weatherService.getLocationCurrentWeather(location = location!!.name)!!.results[0]
+            weatherService.getLocationCurrentWeather(location = location!!.id)!!.results[0]
         withContext(Dispatchers.Main) {
             weather = result.now
             binding!!.weather = weather
