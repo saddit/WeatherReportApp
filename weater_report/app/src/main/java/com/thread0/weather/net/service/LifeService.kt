@@ -12,4 +12,11 @@ interface LifeService {
         @Query("key") key: String = WEATHER_PRIVATE_KEY,
         @Query("location") location: String,
     ): RestrictionResultFromServer?
+
+    @GET("/v3/life/chinese_calendar.json")
+    suspend fun getChineseCalendar(
+        @Query("start") start: Int = 0,
+        @Query("days") days: Int = 7,
+        @Query("key") key: String = WEATHER_PRIVATE_KEY,
+    ): CalendarResultFromServer?
 }

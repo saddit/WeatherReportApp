@@ -20,11 +20,10 @@ import com.thread0.weather.data.constant.PICS_REQ_CODE
 import com.thread0.weather.databinding.ActivityHmsBinding
 import com.thread0.weather.ui.widget.CircleDot
 import com.thread0.weather.util.BitmapUtil
+import com.thread0.weather.util.UiUtils
 import kotlinx.coroutines.Dispatchers
 import top.xuqingquan.base.view.activity.SimpleActivity
 import top.xuqingquan.extension.launch
-import top.xuqingquan.utils.startActivityForResult
-import kotlin.math.log
 
 
 /**
@@ -35,7 +34,9 @@ import kotlin.math.log
 class HmsActivity : SimpleActivity() {
 
     private var originBitmap: Bitmap? = null
+    private var foregroundBitmap:Bitmap? = null
     private var analyzer: MLImageSegmentationAnalyzer? = null
+    private var isGenerating: Boolean = false
     // view binding
     private lateinit var binding: ActivityHmsBinding
 
@@ -57,7 +58,24 @@ class HmsActivity : SimpleActivity() {
         if (requestCode == PICS_REQ_CODE) {
             val uri = data?.data ?: return
             originBitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(uri))
+            generateForegroundBitmap()
             binding.photoImgIV.setImageBitmap(originBitmap)
+        }
+    }
+
+    private fun generateForegroundBitmap() {
+        if(analyzer == null || originBitmap == null) return
+        val frame = MLFrame.fromBitmap(originBitmap)
+        // 创建一个task，处理图像分割检测器返回的结果。
+        isGenerating = true
+        analyzer!!.asyncAnalyseFrame(frame).addOnSuccessListener {
+            // 检测成功处理。
+            foregroundBitmap = it.foreground
+            binding.photoImgIV.setImageBitmap(foregroundBitmap);
+        }.addOnFailureListener {
+            Log.e(TAG, "analyse -> asyncAnalyseFrame: ", it)
+        }.addOnCompleteListener {
+            isGenerating = false
         }
     }
 
@@ -66,8 +84,7 @@ class HmsActivity : SimpleActivity() {
             MLImageSegmentationSetting.Factory() // 设置分割精细模式，true为精细分割模式，false为速度优先分割模式。
                 .setExact(true) // 设置分割模式为人像分割。
                 .setAnalyzerType(MLImageSegmentationSetting.BODY_SEG) // 设置返回结果种类。
-                // MLImageSegmentationScene.FOREGROUND_ONLY: 只返回背景透明的人像图和被分割的原图。
-                .setScene(MLImageSegmentationScene.FOREGROUND_ONLY)
+                .setScene(MLImageSegmentationScene.FOREGROUND_ONLY) //只分割人像
                 .create()
         analyzer = MLAnalyzerFactory.getInstance().getImageSegmentationAnalyzer(setting)
     }
@@ -77,6 +94,21 @@ class HmsActivity : SimpleActivity() {
         analyzer?.stop()
     }
 
+    private fun combineForeAndColor(hexStr: String) {
+        if (analyzer==null) return
+        if(foregroundBitmap == null) {
+            if(!isGenerating) {
+                generateForegroundBitmap()
+            }
+            return
+        }
+        val resBitmap = BitmapUtil.combineBitmapByColor(
+            Color.parseColor(hexStr), foregroundBitmap!!.width,
+            foregroundBitmap!!.height, foregroundBitmap!!
+        )
+        binding.photoImgIV.setImageBitmap(resBitmap)
+    }
+
     private fun setClickEvent() {
 
         binding.toolbar.setNavigationOnClickListener {
@@ -84,6 +116,7 @@ class HmsActivity : SimpleActivity() {
         }
 
         binding.photoImgIV.setOnClickListener {
+            if(UiUtils.isFastClick()) return@setOnClickListener
             val intent = Intent(Intent.ACTION_PICK, null);
             intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
             startActivityForResult(intent, PICS_REQ_CODE)
@@ -91,65 +124,35 @@ class HmsActivity : SimpleActivity() {
 
         binding.redCircleDot.setOnClickListener(object : CircleDot.OnClickListener {
             override fun onClick() {
-                binding.blueCircleDot.isSelected = false;
-                binding.whiteCircleDot.isSelected=false;
-                if(originBitmap == null) return
-                val frame = MLFrame.fromBitmap(originBitmap)
-                // 创建一个task，处理图像分割检测器返回的结果。
-                analyzer?.asyncAnalyseFrame(frame)?.addOnSuccessListener {
-                    // 检测成功处理。
-                    val foreground = it.foreground
-                    val resBitmap = BitmapUtil.combineBitmapByColor(
-                        Color.parseColor("#ff0000"), foreground.width,
-                        foreground.height, foreground
-                    )
-                    binding.photoImgIV.setImageBitmap(resBitmap);
-                }?.addOnFailureListener {
-                    // 检测失败处理。
-                    Log.e(TAG, "analyse -> asyncAnalyseFrame: ", it)
+                binding.blueCircleDot.isSelected = false
+                binding.whiteCircleDot.isSelected = false
+                if (UiUtils.isFastClick()) {
+                    binding.redCircleDot.isSelected = false
+                    return
                 }
+                combineForeAndColor("#ff0000")
             }
         })
         binding.blueCircleDot.setOnClickListener(object : CircleDot.OnClickListener {
             override fun onClick() {
-                binding.redCircleDot.isSelected = false;
-                binding.whiteCircleDot.isSelected = false;
-                if(originBitmap == null) return
-                val frame = MLFrame.fromBitmap(originBitmap)
-                // 创建一个task，处理图像分割检测器返回的结果。
-                analyzer?.asyncAnalyseFrame(frame)?.addOnSuccessListener {
-                        // 检测成功处理。
-                        val foreground = it.foreground
-                        val resBitmap = BitmapUtil.combineBitmapByColor(
-                            Color.parseColor("#007Aff"), foreground.width,
-                            foreground.height, foreground
-                        )
-                        binding.photoImgIV.setImageBitmap(resBitmap);
-                    }?.addOnFailureListener {
-                        // 检测失败处理。
-                        Log.e(TAG, "analyse -> asyncAnalyseFrame: ", it)
-                    }
+                binding.redCircleDot.isSelected = false
+                binding.whiteCircleDot.isSelected = false
+                if (UiUtils.isFastClick()) {
+                    binding.blueCircleDot.isSelected = false
+                    return
+                }
+                combineForeAndColor("#007Aff")
             }
         })
         binding.whiteCircleDot.setOnClickListener(object : CircleDot.OnClickListener {
             override fun onClick() {
-                binding.blueCircleDot.isSelected = false;
-                binding.redCircleDot.isSelected=false;
-                if(originBitmap == null) return
-                val frame = MLFrame.fromBitmap(originBitmap)
-                // 创建一个task，处理图像分割检测器返回的结果。
-                analyzer?.asyncAnalyseFrame(frame)?.addOnSuccessListener {
-                        // 检测成功处理。
-                        val foreground = it.foreground
-                        val resBitmap = BitmapUtil.combineBitmapByColor(
-                            Color.parseColor("#FFFFFF"), foreground.width,
-                            foreground.height, foreground
-                        )
-                        binding.photoImgIV.setImageBitmap(resBitmap);
-                    }?.addOnFailureListener {
-                        // 检测失败处理。
-                        Log.e(TAG, "analyse -> asyncAnalyseFrame: ", it)
-                    }
+                binding.blueCircleDot.isSelected = false
+                binding.redCircleDot.isSelected = false
+                if (UiUtils.isFastClick()) {
+                    binding.whiteCircleDot.isSelected = false
+                    return
+                }
+                combineForeAndColor("#FFFFFF")
             }
         })
     }

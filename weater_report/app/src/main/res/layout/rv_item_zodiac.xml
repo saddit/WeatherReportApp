@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="calendar"
+            type="com.thread0.weather.data.model.Calendar" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/zodiac_pic"
+            android:layout_width="100dp"
+            android:layout_height="120dp"
+            android:layout_marginStart="16dp"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@mipmap/zodiac_1" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/zodiac_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@{calendar.date}"
+            android:textColor="@color/black"
+            android:textSize="?attr/MediumText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/zodiac_pic"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="2014-01-31" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appCompatTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="8dp"
+            android:text="@{calendar.lunarName}"
+            android:textColor="@color/picture_color_blue"
+            android:textSize="?attr/BigText"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/zodiac_pic"
+            app:layout_constraintTop_toBottomOf="@+id/zodiac_date"
+            tools:text="正月十五" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="6dp"
+            android:text="@{calendar.lunar}"
+            android:textSize="?attr/SmallText"
+            app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.018"
+            app:layout_constraintStart_toEndOf="@+id/appCompatTextView"
+            app:layout_constraintTop_toTopOf="@+id/appCompatTextView"
+            app:layout_constraintVertical_bias="1.0"
+            tools:text="(2014-1-1)" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appCompatTextView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/picture_color_blue"
+            android:textSize="?attr/BigText"
+            android:textStyle="bold"
+            android:text="@{calendar.ganzhi}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/zodiac_pic"
+            app:layout_constraintTop_toBottomOf="@+id/appCompatTextView"
+            tools:text="癸巳 乙丑 壬寅" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appCompatTextView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/teal"
+            android:textSize="?attr/BigText"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/zodiac_pic"
+            app:layout_constraintTop_toBottomOf="@+id/appCompatTextView3"
+            android:text="@{calendar.solarTerm}"
+            tools:text="冬至" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:textColor="@color/red"
+            android:textSize="?attr/LargeText"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.928"
+            app:layout_constraintStart_toEndOf="@+id/appCompatTextView2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.924"
+            android:text="@{calendar.lunarFestival}"
+            tools:text="元宵节" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

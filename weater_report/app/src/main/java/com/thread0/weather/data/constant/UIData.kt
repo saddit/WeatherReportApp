@@ -150,6 +150,25 @@ private val alarm = mapOf(
     AlarmKey("森林火险","红色") to R.mipmap.ico_alarm_wildfire_4,
 )
 
-fun getAlarm(type:String, level: String):Int? {
-    return alarm[AlarmKey(type,level)] ?: alarm[AlarmKey("default", level)]
+fun getAlarm(type:String, level: String):Int {
+    return alarm[AlarmKey(type,level)] ?: alarm[AlarmKey("default", level)]!!
+}
+
+private val zodiac = mapOf(
+    "鼠" to R.mipmap.zodiac_1,
+    "牛" to R.mipmap.zodiac_2,
+    "虎" to R.mipmap.zodiac_3,
+    "兔" to R.mipmap.zodiac_4,
+    "龙" to R.mipmap.zodiac_5,
+    "蛇" to R.mipmap.zodiac_6,
+    "马" to R.mipmap.zodiac_7,
+    "羊" to R.mipmap.zodiac_8,
+    "猴" to R.mipmap.zodiac_9,
+    "鸡" to R.mipmap.zodiac_10,
+    "狗" to R.mipmap.zodiac_11,
+    "猪" to R.mipmap.zodiac_12,
+)
+
+fun getZodiacMipmap(name: String): Int {
+    return zodiac[name]?: zodiac["鼠"]!!
 }
