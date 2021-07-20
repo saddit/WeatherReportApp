@@ -13,4 +13,7 @@ interface PortCityDao {
 
     @Query("select count(0) > 0 from t_port_city where cityCode = :cityCode")
     suspend fun isPortCity(cityCode: String): Boolean
+
+    @Query("select count(0) from t_port_city")
+    suspend fun countTotal():Int
 }

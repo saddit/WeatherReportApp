@@ -17,6 +17,9 @@ interface CityDao {
     @Query("select * from t_city where name like :keyword")
     suspend fun queryByKeyword(keyword: String): List<City>
 
+    @Query("select count(0) from t_city")
+    suspend fun countTotal():Int
+
     @Query("select * from t_city where code = :code")
     suspend fun queryByCode(code: String): City?
 

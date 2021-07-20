@@ -110,10 +110,10 @@ class MainActivity : SimpleActivity() {
 
     private fun loadLocations() {
         locations = LinkedList()
-        val locationNameSet = MMKV.defaultMMKV()!!.decodeStringSet(LOCATION_SAVE_KEY);
-        if (locationNameSet != null) {
-            Log.i("sjh_main_activity", "locations init from MMKV decode:$locationNameSet")
-            locations.addAll(locationNameSet)
+        val locationNames = MMKV.defaultMMKV()!!.decodeString(LOCATION_SAVE_KEY);
+        if (locationNames != null) {
+            Log.i("sjh_main_activity", "locations init from MMKV decode:$locationNames")
+            locations.addAll(locationNames.split(","))
         } else {
             Log.i("sjh_main_activity", "locations init from AMap")
             requestLocatePerm()
@@ -163,7 +163,7 @@ class MainActivity : SimpleActivity() {
 
 
     override fun onStop() {
-        MMKV.defaultMMKV()!!.encode(LOCATION_SAVE_KEY, LinkedHashSet(locations))
+        MMKV.defaultMMKV()!!.encode(LOCATION_SAVE_KEY, locations.joinToString(","))
         Log.i("sjh_main_activity", "[onStop] MMKV encode $locations")
         super.onStop()
     }

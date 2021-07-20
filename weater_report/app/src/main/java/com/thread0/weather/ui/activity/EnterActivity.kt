@@ -61,19 +61,25 @@ class EnterActivity : SimpleActivity() {
 
     private suspend fun loadPortCityInfo(sheet: Sheet) {
         val res = ExcelUtils.getListFromSheet(sheet, PortCity::class.java)
-        savePortCity(res)
+        if (portCityDao.countTotal() != res.size) {
+            savePortCity(res)
+        }
     }
 
     private suspend fun loadCityInfo(inputStream: InputStream) {
         val workbook = ExcelUtils.getWorkBook(inputStream)
         val cityList = ExcelUtils.getListFromSheet(workbook.getSheet(1), City::class.java)
-        saveCity(cityList)
+        if(cityList.size != cityDao.countTotal()) {
+            saveCity(cityList)
+        }
     }
 
     private suspend fun loadPortInfo(inputStream: InputStream) {
         val workBook = ExcelUtils.getWorkBook(inputStream)
         val portList = ExcelUtils.getListFromSheet(workBook.getSheet(0), Port::class.java)
-        savePort(portList)
+        if(portList.size != portDao.countTotal()) {
+            savePort(portList)
+        }
         loadPortCityInfo(workBook.getSheet(1))
     }
 
