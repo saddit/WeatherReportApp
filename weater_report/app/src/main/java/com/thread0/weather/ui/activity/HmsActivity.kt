@@ -8,22 +8,29 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.KeyEvent
+import android.view.View
+import androidx.appcompat.app.AlertDialog
 import com.huawei.hms.mlsdk.MLAnalyzerFactory
 import com.huawei.hms.mlsdk.common.MLFrame
 import com.huawei.hms.mlsdk.imgseg.MLImageSegmentationAnalyzer
 import com.huawei.hms.mlsdk.imgseg.MLImageSegmentationScene
 import com.huawei.hms.mlsdk.imgseg.MLImageSegmentationSetting
+import com.thread0.weather.R
 import com.thread0.weather.data.constant.PICS_REQ_CODE
 import com.thread0.weather.databinding.ActivityHmsBinding
 import com.thread0.weather.ui.widget.CircleDot
 import com.thread0.weather.util.BitmapUtil
 import com.thread0.weather.util.UiUtils
+import com.zyao89.view.zloading.ZLoadingTextView
 import kotlinx.coroutines.Dispatchers
 import top.xuqingquan.base.view.activity.SimpleActivity
 import top.xuqingquan.extension.launch
+import java.io.ByteArrayOutputStream
 
 
 /**
@@ -37,6 +44,7 @@ class HmsActivity : SimpleActivity() {
     private var foregroundBitmap:Bitmap? = null
     private var analyzer: MLImageSegmentationAnalyzer? = null
     private var isGenerating: Boolean = false
+    private var alertDialog: AlertDialog? = null
     // view binding
     private lateinit var binding: ActivityHmsBinding
 
@@ -57,7 +65,7 @@ class HmsActivity : SimpleActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICS_REQ_CODE) {
             val uri = data?.data ?: return
-            originBitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(uri))
+            originBitmap = BitmapUtil.changeBitmapSize(BitmapFactory.decodeStream(contentResolver.openInputStream(uri)),900,1080)
             generateForegroundBitmap()
             binding.photoImgIV.setImageBitmap(originBitmap)
         }
@@ -68,14 +76,16 @@ class HmsActivity : SimpleActivity() {
         val frame = MLFrame.fromBitmap(originBitmap)
         // 创建一个task，处理图像分割检测器返回的结果。
         isGenerating = true
+        showLoadingDialog()
         analyzer!!.asyncAnalyseFrame(frame).addOnSuccessListener {
             // 检测成功处理。
             foregroundBitmap = it.foreground
-            binding.photoImgIV.setImageBitmap(foregroundBitmap);
+            binding.photoImgIV.setImageBitmap(it.foreground)
         }.addOnFailureListener {
             Log.e(TAG, "analyse -> asyncAnalyseFrame: ", it)
         }.addOnCompleteListener {
             isGenerating = false
+            dismissLoadingDialog()
         }
     }
 
@@ -107,6 +117,25 @@ class HmsActivity : SimpleActivity() {
             foregroundBitmap!!.height, foregroundBitmap!!
         )
         binding.photoImgIV.setImageBitmap(resBitmap)
+    }
+
+    private fun showLoadingDialog() {
+        alertDialog = AlertDialog.Builder(this).create()
+        alertDialog!!.window!!.setBackgroundDrawable(ColorDrawable())
+        alertDialog!!.setCancelable(false)
+        alertDialog!!.setOnKeyListener { _, keyCode, _ -> keyCode == KeyEvent.KEYCODE_SEARCH || keyCode == KeyEvent.KEYCODE_BACK }
+        alertDialog!!.show()
+        alertDialog!!.setContentView(R.layout.z_loading_dialog)
+        val textView = alertDialog!!.findViewById<ZLoadingTextView>(R.id.z_text_view)
+        textView?.visibility = View.VISIBLE
+        textView?.setText("全力处理中..")
+        alertDialog!!.setCanceledOnTouchOutside(false)
+    }
+
+    private fun dismissLoadingDialog() {
+        if (null != alertDialog && alertDialog!!.isShowing) {
+            alertDialog!!.dismiss()
+        }
     }
 
     private fun setClickEvent() {
