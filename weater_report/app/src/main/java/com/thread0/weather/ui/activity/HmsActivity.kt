@@ -20,8 +20,11 @@ import com.thread0.weather.data.constant.PICS_REQ_CODE
 import com.thread0.weather.databinding.ActivityHmsBinding
 import com.thread0.weather.ui.widget.CircleDot
 import com.thread0.weather.util.BitmapUtil
+import kotlinx.coroutines.Dispatchers
 import top.xuqingquan.base.view.activity.SimpleActivity
+import top.xuqingquan.extension.launch
 import top.xuqingquan.utils.startActivityForResult
+import kotlin.math.log
 
 
 /**
@@ -32,7 +35,7 @@ import top.xuqingquan.utils.startActivityForResult
 class HmsActivity : SimpleActivity() {
 
     private var originBitmap: Bitmap? = null
-    private lateinit var analyzer: MLImageSegmentationAnalyzer
+    private var analyzer: MLImageSegmentationAnalyzer? = null
     // view binding
     private lateinit var binding: ActivityHmsBinding
 
@@ -40,7 +43,11 @@ class HmsActivity : SimpleActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHmsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        createAnalyzer()
+        launch(Dispatchers.IO,{
+            createAnalyzer()
+        },{
+            Log.e("sjh_hms_ml",it.stackTraceToString())
+        })
         // 设置点击事件
         setClickEvent()
     }
@@ -48,13 +55,13 @@ class HmsActivity : SimpleActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICS_REQ_CODE) {
-            val uri = data!!.data ?: return
+            val uri = data?.data ?: return
             originBitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(uri))
             binding.photoImgIV.setImageBitmap(originBitmap)
         }
     }
 
-    private fun createAnalyzer() {
+    private suspend fun createAnalyzer() {
         val setting =
             MLImageSegmentationSetting.Factory() // 设置分割精细模式，true为精细分割模式，false为速度优先分割模式。
                 .setExact(true) // 设置分割模式为人像分割。
@@ -67,7 +74,7 @@ class HmsActivity : SimpleActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        analyzer.stop()
+        analyzer?.stop()
     }
 
     private fun setClickEvent() {
@@ -77,7 +84,7 @@ class HmsActivity : SimpleActivity() {
         }
 
         binding.photoImgIV.setOnClickListener {
-            val intent: Intent = Intent(Intent.ACTION_PICK, null);
+            val intent = Intent(Intent.ACTION_PICK, null);
             intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
             startActivityForResult(intent, PICS_REQ_CODE)
         }
@@ -86,33 +93,31 @@ class HmsActivity : SimpleActivity() {
             override fun onClick() {
                 binding.blueCircleDot.isSelected = false;
                 binding.whiteCircleDot.isSelected=false;
-                if(originBitmap == null) return;
+                if(originBitmap == null) return
                 val frame = MLFrame.fromBitmap(originBitmap)
                 // 创建一个task，处理图像分割检测器返回的结果。
-                analyzer.asyncAnalyseFrame(frame)
-                    .addOnSuccessListener {
-                        // 检测成功处理。
-                        val foreground = it.foreground
-                        val resBitmap = BitmapUtil.combineBitmapByColor(
-                            Color.parseColor("#ff0000"), foreground.width,
-                            foreground.height, foreground
-                        )
-                        binding.photoImgIV.setImageBitmap(resBitmap);
-                    }.addOnFailureListener {
-                        // 检测失败处理。
-                        Log.e(TAG, "analyse -> asyncAnalyseFrame: ", it)
-                    }
+                analyzer?.asyncAnalyseFrame(frame)?.addOnSuccessListener {
+                    // 检测成功处理。
+                    val foreground = it.foreground
+                    val resBitmap = BitmapUtil.combineBitmapByColor(
+                        Color.parseColor("#ff0000"), foreground.width,
+                        foreground.height, foreground
+                    )
+                    binding.photoImgIV.setImageBitmap(resBitmap);
+                }?.addOnFailureListener {
+                    // 检测失败处理。
+                    Log.e(TAG, "analyse -> asyncAnalyseFrame: ", it)
+                }
             }
         })
         binding.blueCircleDot.setOnClickListener(object : CircleDot.OnClickListener {
             override fun onClick() {
                 binding.redCircleDot.isSelected = false;
-                binding.whiteCircleDot.isSelected=false;
-                if(originBitmap == null) return;
+                binding.whiteCircleDot.isSelected = false;
+                if(originBitmap == null) return
                 val frame = MLFrame.fromBitmap(originBitmap)
                 // 创建一个task，处理图像分割检测器返回的结果。
-                analyzer.asyncAnalyseFrame(frame)
-                    .addOnSuccessListener {
+                analyzer?.asyncAnalyseFrame(frame)?.addOnSuccessListener {
                         // 检测成功处理。
                         val foreground = it.foreground
                         val resBitmap = BitmapUtil.combineBitmapByColor(
@@ -120,7 +125,7 @@ class HmsActivity : SimpleActivity() {
                             foreground.height, foreground
                         )
                         binding.photoImgIV.setImageBitmap(resBitmap);
-                    }.addOnFailureListener {
+                    }?.addOnFailureListener {
                         // 检测失败处理。
                         Log.e(TAG, "analyse -> asyncAnalyseFrame: ", it)
                     }
@@ -130,11 +135,10 @@ class HmsActivity : SimpleActivity() {
             override fun onClick() {
                 binding.blueCircleDot.isSelected = false;
                 binding.redCircleDot.isSelected=false;
-                if(originBitmap == null) return;
+                if(originBitmap == null) return
                 val frame = MLFrame.fromBitmap(originBitmap)
                 // 创建一个task，处理图像分割检测器返回的结果。
-                analyzer.asyncAnalyseFrame(frame)
-                    .addOnSuccessListener {
+                analyzer?.asyncAnalyseFrame(frame)?.addOnSuccessListener {
                         // 检测成功处理。
                         val foreground = it.foreground
                         val resBitmap = BitmapUtil.combineBitmapByColor(
@@ -142,7 +146,7 @@ class HmsActivity : SimpleActivity() {
                             foreground.height, foreground
                         )
                         binding.photoImgIV.setImageBitmap(resBitmap);
-                    }.addOnFailureListener {
+                    }?.addOnFailureListener {
                         // 检测失败处理。
                         Log.e(TAG, "analyse -> asyncAnalyseFrame: ", it)
                     }
