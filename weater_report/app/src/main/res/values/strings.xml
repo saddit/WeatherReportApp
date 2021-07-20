@@ -37,7 +37,7 @@
 
     <string name="activity_car_restricted_city">机动车尾号限行</string>
 
-    <string name="activity_car_restricted_info">机动车尾号限行信息</string>
+    <string name="punish_text">机动车尾号限行信息</string>
 
     <string name="port_name">港口名：</string>
     <string name="province_name">所在省份：</string>
@@ -58,4 +58,11 @@
     <string name="deploy_string">发布</string>
     <string name="api_rank">质量排行</string>
     <string name="port_msg_text">港口信息</string>
+    <string name="restrict_region_text">限行区域</string>
+    <string name="remarks_text">详细说明</string>
+    <string name="future_car_restriction_text">限行信息</string>
+    <string name="date_today_text">日期：今天</string>
+    <string name="publish_text">处罚规定</string>
+    <string name="date_tomorrow_text">日期：明天</string>
+    <string name="date_day_after_tomorrow_text">日期：后天</string>
 </resources>

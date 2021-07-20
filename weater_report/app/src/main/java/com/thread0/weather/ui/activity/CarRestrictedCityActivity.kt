@@ -4,8 +4,11 @@
 package com.thread0.weather.ui.activity
 
 import android.os.Bundle
+import com.thread0.weather.data.constant.PARAM_LOCATION
 import com.thread0.weather.databinding.ActivityCarRestrictedCityBinding
+import com.thread0.weather.ui.adapter.CarRestrictedCityAdapter
 import top.xuqingquan.base.view.activity.SimpleActivity
+import top.xuqingquan.utils.startActivity
 
 /**
 *@ClassName: CarRestrictedCityActivity
@@ -21,7 +24,7 @@ class CarRestrictedCityActivity : SimpleActivity() {
     private lateinit var binding: ActivityCarRestrictedCityBinding
 
     //机动车限行城市列表
-    private val carRestrictedList = mutableListOf<Pair<String, String>>(
+    private val carRestrictedList = mutableListOf(
         Pair("WX4FBXXFKE4F", "北京"),
         Pair("WWGQDCW6TBW1", "天津"),
         Pair("YB1UX38K6DY1", "哈尔滨"),
@@ -38,8 +41,19 @@ class CarRestrictedCityActivity : SimpleActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCarRestrictedCityBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        initUI()
         // 设置点击事件
         setClickEvent()
+    }
+
+    private fun initUI() {
+        val adapter = CarRestrictedCityAdapter(carRestrictedList)
+        adapter.setOnClickCityListener { _,id,_->
+            startActivity<CarRestrictedInfoActivity>(
+                PARAM_LOCATION to id
+            )
+        }
+        binding.recyclerView.adapter = adapter
     }
 
     private fun setClickEvent() {

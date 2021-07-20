@@ -4,6 +4,6 @@ import android.view.View;
 
 import com.thread0.weather.data.model.City;
 
-public interface OnCityItemClickListener {
-    void onCityItemClick(View v, City city, int position);
+public interface OnCityItemClickListener<T> {
+    void onCityItemClick(View v, T city, int position);
 }

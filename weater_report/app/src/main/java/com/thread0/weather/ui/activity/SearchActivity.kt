@@ -102,7 +102,7 @@ class SearchActivity : SimpleActivity() {
     }
 
     /**
-     * TODO:依据关键词进行城市列表的刷新，保留与用户关键词相关的城市
+     *      依据关键词进行城市列表的刷新，保留与用户关键词相关的城市
      *      tips：当前关键词搜索不到结果时，需要提醒用户。
      * @param keyword 关键词
      */

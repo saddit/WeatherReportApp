@@ -15,38 +15,40 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class CityListAdapter extends RecyclerView.Adapter<CityListAdapter.ViewHolder> {
+import kotlin.Pair;
 
-    private List<City> cities;
-    private OnCityItemClickListener<City> onClickCityListener;
+public class CarRestrictedCityAdapter extends RecyclerView.Adapter<CarRestrictedCityAdapter.ViewHolder> {
 
-    public CityListAdapter(List<City> cities) {
+    private List<Pair<String,String>> cities;
+    private OnCityItemClickListener<String> onClickCityListener;
+
+    public CarRestrictedCityAdapter(List<Pair<String,String>> cities) {
         this.cities = cities;
     }
 
-    public void setData(List<City> cities) {
+    public void setData(List<Pair<String,String>> cities) {
         this.cities = cities;
         notifyDataSetChanged();
     }
 
-    public void setOnClickCityListener(OnCityItemClickListener<City> listener) {
+    public void setOnClickCityListener(OnCityItemClickListener<String> listener) {
         this.onClickCityListener = listener;
     }
 
     @NonNull
     @NotNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+    public CarRestrictedCityAdapter.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View root = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_item_city, parent, false);
-        return new ViewHolder(root);
+        return new CarRestrictedCityAdapter.ViewHolder(root);
     }
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
-        City city = cities.get(position);
-        holder.name.setText(city.getName());
+        Pair<String,String> city = cities.get(position);
+        holder.name.setText(city.getSecond());
         if (onClickCityListener != null) {
-            holder.itemView.setOnClickListener(v -> onClickCityListener.onCityItemClick(v,city,position));
+            holder.itemView.setOnClickListener(v -> onClickCityListener.onCityItemClick(v,city.getFirst(),position));
         }
     }
 
