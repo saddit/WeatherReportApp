@@ -1,39 +1,27 @@
-# jmu-c2-android
+# 天气预报-安卓
 
-负责：sjh
+实训成品，天气数据来自[心知天气](https://www.seniverse.com/)，主要使用 `Kotlin` 进行开发
 
-#### 介绍
-安卓实训
+## 功能
 
-#### 软件架构
-软件架构说明
+- 天气预报
+- 空气预报
+- 农历节气信息
+- 城市尾号限行
+- （无关）华为HMSCore人像抠图技术的应用
 
+## 应用框架
 
-#### 安装教程
+| 名称                                                | 作用                    |
+| --------------------------------------------------- | ----------------------- |
+| Room                                                | 本地 Sqlite 数据库框架  |
+| MMKV                                                | 高性能本地 XML 存储框架 |
+| Retrofit                                            | 声明式HTTP请求框架      |
+| Amap                                                | 高德定位框架            |
+| [开源脚手架](https://gitee.com/xuqingquan/Scaffold) |                         |
+| [开源工具类](https://gitee.com/xuqingquan/utils)    | 部分                    |
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+项目内应用`ViewBinding`和`DataBinding`实现数据视图的双向绑定。
 
-#### 使用说明
+视图层应用`viewpager2`、`flexbox`
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
-
-
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
